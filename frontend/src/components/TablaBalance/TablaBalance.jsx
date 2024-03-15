@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,14 +33,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
-const categorias = [
-  "Alquiler",
-  "Salidas",
-  "Comida",
-  "Servicios",
-  "Tarjeta de crédito",
-];
 
 function createData(
   categoria,
@@ -106,7 +99,7 @@ export default function TablaBalance() {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell style={{ minWidth: "100px", maxWidth: "100px" }}>Categoría</StyledTableCell>
+              <StyledTableCell style={{ minWidth: "300px", maxWidth: "300px" }}>Categoría</StyledTableCell>
               {["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].map((month, index) => (
                 <StyledTableCell key={index} style={{ minWidth: "100px", maxWidth: "100px" }}>
                   {month}
@@ -118,14 +111,35 @@ export default function TablaBalance() {
             {rows.map((row, rowIndex) => (
               <StyledTableRow key={rowIndex}>
                 <StyledTableCell component="th" scope="row">
-                  {row.categoria}
+                  <TextField
+                    value={row.categoria}
+                    sx={{ width: "100%" }}
+                    InputProps={{ inputProps: { min: 0 } }}
+                    disabled={!editableCells[rowIndex][0]}
+                    onChange={(event) => {
+                      const newValue = event.target.value;
+                      setRows(prevRows =>
+                        prevRows.map((prevRow, prevRowIndex) =>
+                          prevRowIndex === rowIndex
+                            ? { ...prevRow, categoria: newValue }
+                            : prevRow
+                        )
+                      );
+                    }}
+                  />
+                  <IconButton
+                    size="small"
+                    onClick={() => handleToggleEdit(rowIndex, 0)}
+                  >
+                    {editableCells[rowIndex][0] ? <DoneIcon /> : <EditIcon />}
+                  </IconButton>
                 </StyledTableCell>
                 {Object.entries(row).slice(1).map(([key, value], cellIndex) => (
                   <StyledTableCell align="right" key={cellIndex}>
-                    {editableCells[rowIndex][cellIndex] ? (
+                    {editableCells[rowIndex][cellIndex + 1] ? (
                       <TextField
                         value={value}
-                        sx={{ width: "100%" }}
+                        sx={{ width:"650px"}}
                         InputProps={{ inputProps: { min: 0 } }}
                         onChange={(event) => {
                           const newValue = event.target.value;
@@ -143,9 +157,9 @@ export default function TablaBalance() {
                     )}
                     <IconButton
                       size="small"
-                      onClick={() => handleToggleEdit(rowIndex, cellIndex)}
+                      onClick={() => handleToggleEdit(rowIndex, cellIndex + 1)}
                     >
-                      {editableCells[rowIndex][cellIndex] ? <DoneIcon /> : <EditIcon />}
+                      {editableCells[rowIndex][cellIndex + 1] ? <DoneIcon /> : <EditIcon />}
                     </IconButton>
                   </StyledTableCell>
                 ))}
