@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import Login from './components/Login/Login'
 
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <h1>No te la delires app</h1>
+      <Login/>
     </>
   )
 }
