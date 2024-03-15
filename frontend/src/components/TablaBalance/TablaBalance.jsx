@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,6 +9,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,13 +33,47 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const categorias = ["Alquiler", "Salidas", "Comida", "Servicios", "Tarjeta de crédito"];
+const categorias = [
+  "Alquiler",
+  "Salidas",
+  "Comida",
+  "Servicios",
+  "Tarjeta de crédito",
+];
 
-function createData(categoria, enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre) {
-  return { categoria, enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre };
+function createData(
+  categoria,
+  enero,
+  febrero,
+  marzo,
+  abril,
+  mayo,
+  junio,
+  julio,
+  agosto,
+  septiembre,
+  octubre,
+  noviembre,
+  diciembre
+) {
+  return {
+    categoria,
+    enero,
+    febrero,
+    marzo,
+    abril,
+    mayo,
+    junio,
+    julio,
+    agosto,
+    septiembre,
+    octubre,
+    noviembre,
+    diciembre,
+  };
 }
 
-const rows = [
+const initialRows = [
   createData("Alquiler", 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000),
   createData("Salidas", 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300),
   createData("Comida", 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850),
@@ -46,6 +84,21 @@ const rows = [
 var añoActual = "2024";
 
 export default function TablaBalance() {
+  const [rows, setRows] = useState(initialRows);
+  const [editableCells, setEditableCells] = useState(
+    Array.from({ length: initialRows.length }, () =>
+      Array.from({ length: 12 }, () => false)
+    )
+  );
+
+  const handleToggleEdit = (rowIndex, cellIndex) => {
+    setEditableCells(prevEditableCells => {
+      const updatedEditableCells = [...prevEditableCells];
+      updatedEditableCells[rowIndex][cellIndex] = !updatedEditableCells[rowIndex][cellIndex];
+      return updatedEditableCells;
+    });
+  };
+
   return (
     <div style={{ marginTop: "100px", width: "70%", marginLeft: "auto", marginRight: "auto" }}>
       <h3>Balance anual {añoActual}</h3>
@@ -53,42 +106,47 @@ export default function TablaBalance() {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Categoría</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Enero</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Febrero</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Marzo</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Abril</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Mayo</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Junio</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Julio</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Agosto</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Septiembre</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Octubre</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Noviembre</StyledTableCell>
-                <StyledTableCell align="right" style={{ minWidth: '100px', maxWidth: '100px' }}>Diciembre</StyledTableCell>
+              <StyledTableCell style={{ minWidth: "100px", maxWidth: "100px" }}>Categoría</StyledTableCell>
+              {["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"].map((month, index) => (
+                <StyledTableCell key={index} style={{ minWidth: "100px", maxWidth: "100px" }}>
+                  {month}
+                </StyledTableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
-              <StyledTableRow key={index}>
+            {rows.map((row, rowIndex) => (
+              <StyledTableRow key={rowIndex}>
                 <StyledTableCell component="th" scope="row">
                   {row.categoria}
                 </StyledTableCell>
-                {Object.keys(row).slice(1).map((key, keyIndex) => (
-                  <StyledTableCell align="right" key={keyIndex}>
-                    <TextField
-                      id={`${index}-${keyIndex}`}
-                      
-                      value={row[key]}
-                      sx={{ width: "100%" }}
-                      InputProps={{ inputProps: { min: 0 } }}
-                      onChange={(event) => {
-                        const value = event.target.value;
-                        const updatedRows = [...rows];
-                        updatedRows[index][key] = value;
-                        // Actualiza el estado con las filas actualizadas
-                      }}
-                    />
+                {Object.entries(row).slice(1).map(([key, value], cellIndex) => (
+                  <StyledTableCell align="right" key={cellIndex}>
+                    {editableCells[rowIndex][cellIndex] ? (
+                      <TextField
+                        value={value}
+                        sx={{ width: "100%" }}
+                        InputProps={{ inputProps: { min: 0 } }}
+                        onChange={(event) => {
+                          const newValue = event.target.value;
+                          setRows(prevRows =>
+                            prevRows.map((prevRow, prevRowIndex) =>
+                              prevRowIndex === rowIndex
+                                ? { ...prevRow, [key]: newValue }
+                                : prevRow
+                            )
+                          );
+                        }}
+                      />
+                    ) : (
+                      value
+                    )}
+                    <IconButton
+                      size="small"
+                      onClick={() => handleToggleEdit(rowIndex, cellIndex)}
+                    >
+                      {editableCells[rowIndex][cellIndex] ? <DoneIcon /> : <EditIcon />}
+                    </IconButton>
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
