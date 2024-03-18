@@ -6,12 +6,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import jsonData from "./data.json";
 
 const TablaBalance = () => {
   const [data, setData] = useState([]);
-  const [ingresos, setIngresos] = useState([]); // array para almacenar los gastos de las categorías.
-  const [balanceMensual, setBalanceMensual] = useState([]); // array para almacenar los balances mensuales
+  const [ingresos, setIngresos] = useState([]);
+  const [balanceMensual, setBalanceMensual] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +22,7 @@ const TablaBalance = () => {
         setData(jsonData.data);
         setIngresos(
           jsonData.data.find((item) => item.category === "INGRESOS").expenses
-        ); // se obtienen todas los gastos de las diferentes categorías
+        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -65,10 +68,9 @@ const TablaBalance = () => {
       <h3>Balance anual 2024</h3>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
-          <TableHead style={{ background: "black" }}>
-            {" "}
-            {/* Estilo para la cabecera */}
+          <TableHead style={{ background: "#628979" }}>
             <TableRow>
+              <TableCell style={{ color: "white" }}>Acciones</TableCell>
               <TableCell style={{ color: "white" }}>Categoría</TableCell>
               <TableCell style={{ color: "white" }}>Enero</TableCell>
               <TableCell style={{ color: "white" }}>Febrero</TableCell>
@@ -87,13 +89,33 @@ const TablaBalance = () => {
           <TableBody>
             {data.map((item, index) => (
               <TableRow key={index}>
-                <TableCell>{item.category}</TableCell>
-                {item.expenses.map((expense, expenseIndex) => (
-                  <TableCell key={expenseIndex}>{expense.amount}</TableCell>
-                ))}
+                {item.category !== "INGRESOS" && (
+                  <>
+                    <TableCell>
+                      <IconButton aria-label="delete" color="error">
+                        <DeleteIcon />
+                      </IconButton>
+                      <IconButton aria-label="edit" color="primary">
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>{item.category}</TableCell>
+                    {item.expenses.map((expense, expenseIndex) => (
+                      <TableCell key={expenseIndex}>{expense.amount}</TableCell>
+                    ))}
+                  </>
+                )}
               </TableRow>
             ))}
             <TableRow>
+              <TableCell></TableCell>
+              <TableCell>INGRESOS</TableCell>
+              {ingresos.map((income, index) => (
+                <TableCell key={index}>{income.amount}</TableCell>
+              ))}
+            </TableRow>
+            <TableRow>
+              <TableCell></TableCell>
               <TableCell>BALANCE MENSUAL</TableCell>
               {balanceMensual.map((balance, index) => (
                 <TableCell key={index}>{balance.amount}</TableCell>
