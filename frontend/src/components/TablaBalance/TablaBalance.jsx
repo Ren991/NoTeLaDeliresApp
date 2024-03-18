@@ -10,6 +10,8 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import jsonData from "./data.json";
+import AnualChartsBalance from "./AnualChartsBalance";
+import { Link } from "react-router-dom"; 
 
 const TablaBalance = () => {
   const [data, setData] = useState([]);
@@ -85,28 +87,76 @@ const TablaBalance = () => {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead style={{ background: "#628979" }}>
             <TableRow>
-              <TableCell style={{ color: "white" }}>Acciones</TableCell>
-              <TableCell style={{ color: "white" }}>Categoría</TableCell>
-              <TableCell style={{ color: "white" }}>Enero</TableCell>
-              <TableCell style={{ color: "white" }}>Febrero</TableCell>
-              <TableCell style={{ color: "white" }}>Marzo</TableCell>
-              <TableCell style={{ color: "white" }}>Abril</TableCell>
-              <TableCell style={{ color: "white" }}>Mayo</TableCell>
-              <TableCell style={{ color: "white" }}>Junio</TableCell>
-              <TableCell style={{ color: "white" }}>Julio</TableCell>
-              <TableCell style={{ color: "white" }}>Agosto</TableCell>
-              <TableCell style={{ color: "white" }}>Septiembre</TableCell>
-              <TableCell style={{ color: "white" }}>Octubre</TableCell>
-              <TableCell style={{ color: "white" }}>Noviembre</TableCell>
-              <TableCell style={{ color: "white" }}>Diciembre</TableCell>
+              <TableCell style={{ color: "white" }}></TableCell>
+              <TableCell style={{ color: "white" }}>Categorias</TableCell>
+              <TableCell style={{ color: "white" }}>
+                <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Enero
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Febrero
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Marzo
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Abril
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Mayo
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Junio
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Julio
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Agosto
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Septiembre
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Octubre
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Noviembre
+                </Link>
+              </TableCell>
+              <TableCell style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" , textDecoration:"none"}}>
+                  Diciembre
+                </Link>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item, index) => (
-              <TableRow key={index}>
+              <TableRow key={index} >
                 {item.category !== "INGRESOS" && (
                   <>
-                    <TableCell>
+                    <TableCell style={{ background: "#628979" }}>
                       <IconButton aria-label="delete" color="error" onClick={() => handleDeleteRow(index)}>
                         <DeleteIcon />
                       </IconButton>
@@ -114,7 +164,7 @@ const TablaBalance = () => {
                         <EditIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell>{item.category}</TableCell>
+                    <TableCell style={{ background: "#628979", color:"white" }}>{item.category}</TableCell>
                     {item.expenses.map((expense, expenseIndex) => (
                       <TableCell key={expenseIndex}>{expense.amount}</TableCell>
                     ))}
@@ -123,15 +173,15 @@ const TablaBalance = () => {
               </TableRow>
             ))}
             <TableRow>
-              <TableCell></TableCell>
-              <TableCell>INGRESOS</TableCell>
+              <TableCell style={{background:"#54DEA5", color:"white"}}></TableCell>
+              <TableCell style={{background:"#54DEA5", color:"white"}}>INGRESOS</TableCell>
               {ingresos.map((income, index) => (
                 <TableCell key={index}>{income.amount}</TableCell>
               ))}
             </TableRow>
             <TableRow>
-              <TableCell></TableCell>
-              <TableCell>BALANCE MENSUAL</TableCell>
+              <TableCell style={{background:"#54DEA5", color:"white"}}></TableCell>
+              <TableCell style={{background:"#54DEA5", color:"white"}}>BALANCE MENSUAL</TableCell>
               {balanceMensual.map((balance, index) => (
                 <TableCell key={index}>{balance.amount}</TableCell>
               ))}
@@ -139,6 +189,7 @@ const TablaBalance = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <AnualChartsBalance data={data}/>
     </div>
   );
 };
