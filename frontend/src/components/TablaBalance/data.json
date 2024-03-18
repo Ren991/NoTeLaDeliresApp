@@ -71,7 +71,41 @@
       {
         "category": "Tarjeta de crédito",
         "expenses": [
-          { "month": "January", "amount": 500 },
+          { "month": "January", "amount": 0 },
+          { "month": "February", "amount": 0 },
+          { "month": "March", "amount": 0 },
+          { "month": "April", "amount": 0 },
+          { "month": "May", "amount": 0 },
+          { "month": "June", "amount": 0 },
+          { "month": "July", "amount": 0 },
+          { "month": "August", "amount": 0 },
+          { "month": "September", "amount": 0 },
+          { "month": "October", "amount": 0 },
+          { "month": "November", "amount": 0 },
+          { "month": "December", "amount": 0 }
+        ]
+      },
+      {
+        "category": "Inversiones",
+        "expenses": [
+          { "month": "January", "amount": 0 },
+          { "month": "February", "amount": 0 },
+          { "month": "March", "amount": 0 },
+          { "month": "April", "amount": 0 },
+          { "month": "May", "amount": 0 },
+          { "month": "June", "amount": 0 },
+          { "month": "July", "amount": 0 },
+          { "month": "August", "amount": 0 },
+          { "month": "September", "amount": 0 },
+          { "month": "October", "amount": 0 },
+          { "month": "November", "amount": 0 },
+          { "month": "December", "amount": 0 }
+        ]
+      },
+      {
+        "category": "INGRESOS",
+        "expenses": [
+          { "month": "January", "amount": 22500 },
           { "month": "February", "amount": 500 },
           { "month": "March", "amount": 500 },
           { "month": "April", "amount": 500 },
@@ -85,6 +119,7 @@
           { "month": "December", "amount": 500 }
         ]
       }
+
     ]
   }
   
