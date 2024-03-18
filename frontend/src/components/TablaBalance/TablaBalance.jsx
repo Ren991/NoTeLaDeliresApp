@@ -56,6 +56,21 @@ const TablaBalance = () => {
     }
   }, [data, ingresos]);
 
+  const handleEditCategory = (index) => {
+    const newData = [...data];
+    const newCategory = prompt("Ingrese el nuevo nombre de la categoría");
+    if (newCategory !== null) {
+      newData[index].category = newCategory;
+      setData(newData);
+    }
+  };
+
+  const handleDeleteRow = (index) => {
+    const newData = [...data];
+    newData.splice(index, 1);
+    setData(newData);
+  };
+
   return (
     <div
       style={{
@@ -92,10 +107,10 @@ const TablaBalance = () => {
                 {item.category !== "INGRESOS" && (
                   <>
                     <TableCell>
-                      <IconButton aria-label="delete" color="error">
+                      <IconButton aria-label="delete" color="error" onClick={() => handleDeleteRow(index)}>
                         <DeleteIcon />
                       </IconButton>
-                      <IconButton aria-label="edit" color="primary">
+                      <IconButton aria-label="edit" color="primary" onClick={() => handleEditCategory(index)}>
                         <EditIcon />
                       </IconButton>
                     </TableCell>
