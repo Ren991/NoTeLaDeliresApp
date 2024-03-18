@@ -1,0 +1,90 @@
+{
+    "data": [
+      {
+        "category": "Alquiler",
+        "expenses": [
+          { "month": "January", "amount": 1000 },
+          { "month": "February", "amount": 1000 },
+          { "month": "March", "amount": 1000 },
+          { "month": "April", "amount": 1000 },
+          { "month": "May", "amount": 1000 },
+          { "month": "June", "amount": 1000 },
+          { "month": "July", "amount": 1000 },
+          { "month": "August", "amount": 1000 },
+          { "month": "September", "amount": 1000 },
+          { "month": "October", "amount": 1000 },
+          { "month": "November", "amount": 1000 },
+          { "month": "December", "amount": 1000 }
+        ]
+      },
+      {
+        "category": "Salidas",
+        "expenses": [
+          { "month": "January", "amount": 200 },
+          { "month": "February", "amount": 300 },
+          { "month": "March", "amount": 400 },
+          { "month": "April", "amount": 500 },
+          { "month": "May", "amount": 600 },
+          { "month": "June", "amount": 700 },
+          { "month": "July", "amount": 800 },
+          { "month": "August", "amount": 900 },
+          { "month": "September", "amount": 1000 },
+          { "month": "October", "amount": 1100 },
+          { "month": "November", "amount": 1200 },
+          { "month": "December", "amount": 1300 }
+        ]
+      },
+      {
+        "category": "Comida",
+        "expenses": [
+          { "month": "January", "amount": 300 },
+          { "month": "February", "amount": 350 },
+          { "month": "March", "amount": 400 },
+          { "month": "April", "amount": 450 },
+          { "month": "May", "amount": 500 },
+          { "month": "June", "amount": 550 },
+          { "month": "July", "amount": 600 },
+          { "month": "August", "amount": 650 },
+          { "month": "September", "amount": 700 },
+          { "month": "October", "amount": 750 },
+          { "month": "November", "amount": 800 },
+          { "month": "December", "amount": 850 }
+        ]
+      },
+      {
+        "category": "Servicios",
+        "expenses": [
+          { "month": "January", "amount": 150 },
+          { "month": "February", "amount": 150 },
+          { "month": "March", "amount": 150 },
+          { "month": "April", "amount": 150 },
+          { "month": "May", "amount": 150 },
+          { "month": "June", "amount": 150 },
+          { "month": "July", "amount": 150 },
+          { "month": "August", "amount": 150 },
+          { "month": "September", "amount": 150 },
+          { "month": "October", "amount": 150 },
+          { "month": "November", "amount": 150 },
+          { "month": "December", "amount": 150 }
+        ]
+      },
+      {
+        "category": "Tarjeta de crédito",
+        "expenses": [
+          { "month": "January", "amount": 500 },
+          { "month": "February", "amount": 500 },
+          { "month": "March", "amount": 500 },
+          { "month": "April", "amount": 500 },
+          { "month": "May", "amount": 500 },
+          { "month": "June", "amount": 500 },
+          { "month": "July", "amount": 500 },
+          { "month": "August", "amount": 500 },
+          { "month": "September", "amount": 500 },
+          { "month": "October", "amount": 500 },
+          { "month": "November", "amount": 500 },
+          { "month": "December", "amount": 500 }
+        ]
+      }
+    ]
+  }
+  
