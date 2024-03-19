@@ -1,10 +1,27 @@
 import { PieChart } from "@mui/x-charts/PieChart";
+import { BarChart } from '@mui/x-charts/BarChart';
+import { LineChart } from '@mui/x-charts/LineChart';
 
-const AnualChartsBalance = ({ data }) => {
+const AnualChartsBalance = ({ data , ingresosMensuales}) => {
+  console.log(data)
   
     if (!data || data.length === 0) {
         return <div>No hay datos disponibles para mostrar</div>;
       }
+      const transformData = (data) => {
+        if (!Array.isArray(data.expenses)) {
+          return [];
+        }
+        const months = data.expenses[0].map(expense => expense.month);
+        const amounts = data.expenses.map(expense => expense.amount);
+        console.log(months)
+        
+      
+        return [
+          { data: amounts },
+        ];
+      };
+      
     const series = [
         {
           data: data
@@ -23,6 +40,10 @@ const AnualChartsBalance = ({ data }) => {
         },
       ];
 
+      const uData = ingresosMensuales;
+      const xLabels = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      
+
   return (
     <div >
       
@@ -30,10 +51,20 @@ const AnualChartsBalance = ({ data }) => {
         <div>
             <h2>Gráfico de gastos</h2>
             <PieChart series={series} width={500} height={200}  />
+            <h2>Gráfico de gastos</h2>
+            <LineChart
+              width={500}
+              height={300}
+              series={[{ data: uData, label: 'uv', area: true, showMark: false }]}
+              xAxis={[{ scaleType: 'point', data: xLabels }]}
+              sx={{
+                '.MuiLineElement-root': {
+                  display: 'none',
+                },
+              }}
+            />
         </div>
-        <div>
-            <h3>Balances mensuales en el año 2024</h3>
-        </div>
+       
       </div>
       
     </div>

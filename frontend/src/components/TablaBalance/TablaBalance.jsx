@@ -20,6 +20,7 @@ const TablaBalance = () => {
   const [data, setData] = useState([]);
   const [ingresos, setIngresos] = useState([]);
   const [balanceMensual, setBalanceMensual] = useState([]);
+  const [ingresosMensuales, setIngresosMensuales] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
@@ -38,11 +39,13 @@ const TablaBalance = () => {
     };
 
     fetchData();
+    console.log(data)
   }, []);
 
   useEffect(() => {
     if (data.length > 0 && ingresos.length > 0) {
       const balance = [];
+      const gastosMensuales = [];
       for (const ingreso of ingresos) {
         let totalGastos = 0;
         for (const item of data) {
@@ -54,17 +57,22 @@ const TablaBalance = () => {
               (expense) => expense.month === ingreso.month
             );
             totalGastos += expense ? expense.amount : 0;
+            console.log(totalGastos);
+
           }
         }
         balance.push({
           month: ingreso.month,
           amount: ingreso.amount - totalGastos,
         });
+        gastosMensuales.push(totalGastos)
       }
       setBalanceMensual(balance);
+      setIngresosMensuales(gastosMensuales);
     }
   }, [data, ingresos]);
 
+  
   const handleEditCategory = (index) => {
     const newData = [...data];
     const newCategory = prompt("Ingrese el nuevo nombre de la categoría");
@@ -245,7 +253,7 @@ const TablaBalance = () => {
           <Typography variant="h6" component="h2">
             Gráficos de Balance Anual
           </Typography>
-          <AnualChartsBalance data={data} />
+          <AnualChartsBalance data={data} ingresosMensuales={ingresosMensuales}/>
         </Box>
       </Modal>
      
