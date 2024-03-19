@@ -1,6 +1,7 @@
 import { PieChart } from "@mui/x-charts/PieChart";
 
 const AnualChartsBalance = ({ data }) => {
+  
     if (!data || data.length === 0) {
         return <div>No hay datos disponibles para mostrar</div>;
       }
@@ -23,9 +24,18 @@ const AnualChartsBalance = ({ data }) => {
       ];
 
   return (
-    <div style={{ marginTop: "130px", width: "80%", marginLeft: "auto", marginRight: "auto" }}>
-      <h2>Gráfico de gastos</h2>
-      <PieChart series={series} width={600} height={200}  />
+    <div style={{marginTop: "130px", width: "80%", marginLeft: "auto", marginRight: "auto" }}>
+      
+      <div style={{display:"flex"}}>
+        <div>
+            <h2>Gráfico de gastos</h2>
+            <PieChart series={series} width={600} height={200}  />
+        </div>
+        <div>
+            <h3>Balances mensuales en el año 2024</h3>
+        </div>
+      </div>
+      
     </div>
   );
 };
