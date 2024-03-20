@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact'];
+const navItems = ["Salir","Acerca de"];
 
 function Navbar(props) {
   const { window } = props;
@@ -98,10 +98,7 @@ function Navbar(props) {
 }
 
 Navbar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
+ 
   window: PropTypes.func,
 };
 

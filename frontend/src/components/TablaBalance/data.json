@@ -20,7 +20,7 @@
       {
         "category": "Salidas",
         "expenses": [
-          { "month": "January", "amount": 200 },
+          { "month": "January", "amount": 20000 },
           { "month": "February", "amount": 300 },
           { "month": "March", "amount": 400 },
           { "month": "April", "amount": 500 },

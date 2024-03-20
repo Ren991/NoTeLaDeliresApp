@@ -3,7 +3,7 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 
 const AnualChartsBalance = ({ data , ingresosMensuales}) => {
-  console.log(data)
+  
   
     if (!data || data.length === 0) {
         return <div>No hay datos disponibles para mostrar</div>;
@@ -13,9 +13,7 @@ const AnualChartsBalance = ({ data , ingresosMensuales}) => {
           return [];
         }
         const months = data.expenses[0].map(expense => expense.month);
-        const amounts = data.expenses.map(expense => expense.amount);
-        console.log(months)
-        
+        const amounts = data.expenses.map(expense => expense.amount);    
       
         return [
           { data: amounts },
@@ -49,9 +47,9 @@ const AnualChartsBalance = ({ data , ingresosMensuales}) => {
       
       <div style={{display:"flex"}}>
         <div>
-            <h2>Gráfico de gastos</h2>
+            <h2>Categorias gastos</h2>
             <PieChart series={series} width={500} height={200}  />
-            <h2>Gráfico de gastos</h2>
+            <h2>Gráfico de gastos por mes</h2>
             <LineChart
               width={500}
               height={300}

@@ -12,8 +12,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import jsonData from "./data.json";
 import AnualChartsBalance from "./AnualChartsBalance";
 import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
-import { Modal,Box,Typography } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import { Modal,Box} from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save"; 
 
 
 const TablaBalance = () => {
@@ -22,7 +23,12 @@ const TablaBalance = () => {
   const [balanceMensual, setBalanceMensual] = useState([]);
   const [ingresosMensuales, setIngresosMensuales] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editableValues, setEditableValues] = useState([]);
 
+  const months = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +45,7 @@ const TablaBalance = () => {
     };
 
     fetchData();
-    console.log(data)
+    
   }, []);
 
   useEffect(() => {
@@ -56,8 +62,7 @@ const TablaBalance = () => {
             const expense = item.expenses.find(
               (expense) => expense.month === ingreso.month
             );
-            totalGastos += expense ? expense.amount : 0;
-            console.log(totalGastos);
+            totalGastos += expense ? expense.amount : 0;          
 
           }
         }
@@ -86,9 +91,7 @@ const TablaBalance = () => {
     const newData = [...data];
     newData.splice(index, 1);
     setData(newData);
-  };
-
- 
+  }; 
 
   const openCharts = () => {
     setIsModalOpen(true);
@@ -97,25 +100,22 @@ const TablaBalance = () => {
   const closeCharts = () => {
     setIsModalOpen(false);
   };
- 
+
+  const editarMes = (index) => () => {
+    console.log('Editando el mes:', months[index]);
+    // Aquí puedes realizar cualquier acción que necesites con el mes seleccionado
+  };
+
   
 
   return (
-    <div
-      style={{
-        marginTop: "100px",
-        width: "70%",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
+    <div style={{ marginTop: "100px",  width: "70%", marginLeft: "auto", marginRight: "auto" }}>
       <div style={{display:"flex",justifyContent:"space-around"}}>
       <Button>{"<"}</Button>
         <h3>Balance anual 2024</h3>        
           <Button variant="text" onClick={openCharts}>
             Mostrar Gráficos
-          </Button>
-        
+          </Button>        
         <Button>{">"}</Button>
       </div>
       
@@ -125,56 +125,12 @@ const TablaBalance = () => {
             <TableRow>
               <TableCell style={{ color: "white" }}></TableCell>
               <TableCell style={{ color: "white" }}>Categorias</TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Enero</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Febrero</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Marzo</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Abril</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Mayo</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Junio</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Julio</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Agosto</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Septiembre</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Octubre</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Noviembre</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-              <TableCell style={{ color: "white" }}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>Diciembre</Link>
-                <IconButton  aria-label="edit"><EditIcon /></IconButton>
-              </TableCell>
-
-              
+              {months.map((month, index) => (              
+                  <TableCell style={{ color: 'white' }} key={index}>
+                    <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>{month}</Link>
+                    <IconButton aria-label="edit" onClick={editarMes(index)}><EditIcon /></IconButton>
+                  </TableCell>  
+              ))}              
             </TableRow>
           </TableHead>
           <TableBody>
@@ -204,7 +160,10 @@ const TablaBalance = () => {
                       {item.category}
                     </TableCell>
                     {item.expenses.map((expense, expenseIndex) => (
-                      <TableCell key={expenseIndex}>{expense.amount}</TableCell>
+                      <TableCell key={expenseIndex}>
+                        <TextField disabled value={expense.amount} style={{width:"150px"}} >                       
+                        </TextField>                        
+                      </TableCell>
                     ))}
                   </>
                 )}
@@ -236,32 +195,11 @@ const TablaBalance = () => {
         </Table>
       </TableContainer>
       <Modal open={isModalOpen} onClose={closeCharts}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 800,
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
-            p: 4,
-
-          }}
-        >
-          <Typography variant="h6" component="h2">
-            Gráficos de Balance Anual
-          </Typography>
+        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 800, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24,p: 4,}}>
           <AnualChartsBalance data={data} ingresosMensuales={ingresosMensuales}/>
         </Box>
-      </Modal>
-     
-        
-      
-      
+      </Modal>    
     </div>
   );
 };
-
 export default TablaBalance;
