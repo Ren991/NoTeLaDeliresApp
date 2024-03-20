@@ -53,7 +53,7 @@ const AnualChartsBalance = ({ data , ingresosMensuales}) => {
             <LineChart
               width={600}
               height={300}
-              series={[{ data: uData, label: 'uv', area: true, showMark: false }]}
+              series={[{ data: uData, label: 'Gastos Totales por mes', area: true, showMark: false }]}
               xAxis={[{ scaleType: 'point', data: xLabels }]}
               sx={{
                 '.MuiLineElement-root': {

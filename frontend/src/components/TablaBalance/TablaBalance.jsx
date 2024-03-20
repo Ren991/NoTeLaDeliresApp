@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
+import {  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button,TextField,Modal,Box} from "@mui/material";
+import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import jsonData from "./data.json";
 import AnualChartsBalance from "./AnualChartsBalance";
-import { Link } from "react-router-dom";
-import { Button, TextField } from "@mui/material";
-import { Modal,Box} from "@mui/material";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-
 
 const TablaBalance = () => {
   const [data, setData] = useState([]);
@@ -26,10 +16,7 @@ const TablaBalance = () => {
   const [editableValues, setEditableValues] = useState([]);
   const [editingMonth, setEditingMonth] = useState(null);
 
-  const months = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-  ];
+  const months = [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,6 +62,7 @@ const TablaBalance = () => {
       }
       setBalanceMensual(balance);
       setIngresosMensuales(gastosMensuales);
+      console.log(balance);
     }
   }, [data, ingresos]);
 
@@ -113,7 +101,8 @@ const TablaBalance = () => {
 
   const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
     const newData = [...data];
-    newData[categoryIndex].expenses[monthIndex].amount = newValue;
+    const parsedValue = parseFloat(newValue); 
+    newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue; 
     setData(newData);
   };
 
@@ -163,12 +152,13 @@ const TablaBalance = () => {
           <TableBody>
             {data.map((item, index) => (
               <TableRow key={index}>
-                {item.category !== "INGRESOS" && (
+                {item.category  && (
                   <>
                     <TableCell style={{ background: "#628979" }}>
                       <IconButton
                         aria-label="delete"
                         color="error"
+                        disabled={item.category === "INGRESOS"}
                         onClick={() => handleDeleteRow(index)}
                       >
                         <DeleteIcon />
@@ -177,6 +167,7 @@ const TablaBalance = () => {
                         aria-label="edit"
                         color="primary"
                         onClick={() => handleEditCategory(index)}
+                        disabled={item.category === "INGRESOS"}
                       >
                         <EditIcon />
                       </IconButton>
@@ -189,10 +180,11 @@ const TablaBalance = () => {
                     {item.expenses.map((expense, expenseIndex) => (
                       <TableCell key={expenseIndex}>
                            <input 
+                              type="number"
                               disabled={editingMonth !== expenseIndex} 
                               value={expense.amount}
                               onChange={(e) => handleExpenseChange(index, expenseIndex, e.target.value)} 
-                              style={{width:"150px"}} 
+                              style={{width:"150px", height:"50px" , borderRadius:"0.5rem"}} 
                             />                       
                       </TableCell> 
                     ))}
@@ -201,15 +193,15 @@ const TablaBalance = () => {
               </TableRow>
             ))}
             <TableRow>
-              <TableCell
+              {/*<TableCell
                 style={{ background: "#54DEA5", color: "white" }}
               ></TableCell>
-              <TableCell style={{ background: "#54DEA5", color: "white" }}>
+               <TableCell style={{ background: "#54DEA5", color: "white" }}>
                 INGRESOS
               </TableCell>
               {ingresos.map((income, index) => (
                 <TableCell key={index}>{income.amount}</TableCell>
-              ))}
+              ))} */}
             </TableRow>
             <TableRow>
               <TableCell
