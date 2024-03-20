@@ -24,6 +24,7 @@ const TablaBalance = () => {
   const [ingresosMensuales, setIngresosMensuales] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editableValues, setEditableValues] = useState([]);
+  const [editingMonth, setEditingMonth] = useState(null);
 
   const months = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -103,7 +104,7 @@ const TablaBalance = () => {
 
   const editarMes = (index) => () => {
     console.log('Editando el mes:', months[index]);
-    // Aquí puedes realizar cualquier acción que necesites con el mes seleccionado
+    setEditingMonth(index);
   };
 
   
@@ -161,9 +162,14 @@ const TablaBalance = () => {
                     </TableCell>
                     {item.expenses.map((expense, expenseIndex) => (
                       <TableCell key={expenseIndex}>
-                        <TextField disabled value={expense.amount} style={{width:"150px"}} >                       
-                        </TextField>                        
+                          <TextField 
+                            disabled={editingMonth !== expenseIndex} 
+                            value={expense.amount} 
+                            style={{width:"150px"}} 
+                          />                      
                       </TableCell>
+
+ 
                     ))}
                   </>
                 )}
