@@ -47,7 +47,7 @@ const AnualChartsBalance = ({ data , ingresosMensuales}) => {
       
       <div style={{display:"flex"}}>
         <div>
-            <h2>Categorias gastos</h2>
+            <h2>Categorias gastos Anuales</h2>
             <PieChart series={series} width={600} height={300}  />
             <h2>Gráfico de gastos por mes</h2>
             <LineChart

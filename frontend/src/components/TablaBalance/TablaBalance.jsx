@@ -104,7 +104,17 @@ const TablaBalance = () => {
 
   const editarMes = (index) => () => {
     console.log('Editando el mes:', months[index]);
-    setEditingMonth(index);
+    if (editingMonth === index) {
+      setEditingMonth(null);
+    } else {
+      setEditingMonth(index);
+    }
+  };
+
+  const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
+    const newData = [...data];
+    newData[categoryIndex].expenses[monthIndex].amount = newValue;
+    setData(newData);
   };
 
   const handleAddCategory = () => {
@@ -178,14 +188,13 @@ const TablaBalance = () => {
                     </TableCell>
                     {item.expenses.map((expense, expenseIndex) => (
                       <TableCell key={expenseIndex}>
-                          <input 
-                            disabled={editingMonth !== expenseIndex} 
-                            value={expense.amount}      
-                            style={{width:"150px"}} 
-                          />                      
-                      </TableCell>
-
- 
+                           <input 
+                              disabled={editingMonth !== expenseIndex} 
+                              value={expense.amount}
+                              onChange={(e) => handleExpenseChange(index, expenseIndex, e.target.value)} 
+                              style={{width:"150px"}} 
+                            />                       
+                      </TableCell> 
                     ))}
                   </>
                 )}
