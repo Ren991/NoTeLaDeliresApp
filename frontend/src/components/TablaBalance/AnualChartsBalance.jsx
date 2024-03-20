@@ -48,10 +48,10 @@ const AnualChartsBalance = ({ data , ingresosMensuales}) => {
       <div style={{display:"flex"}}>
         <div>
             <h2>Categorias gastos</h2>
-            <PieChart series={series} width={500} height={200}  />
+            <PieChart series={series} width={600} height={300}  />
             <h2>Gráfico de gastos por mes</h2>
             <LineChart
-              width={500}
+              width={600}
               height={300}
               series={[{ data: uData, label: 'uv', area: true, showMark: false }]}
               xAxis={[{ scaleType: 'point', data: xLabels }]}

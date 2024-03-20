@@ -14,7 +14,7 @@ import AnualChartsBalance from "./AnualChartsBalance";
 import { Link } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import { Modal,Box} from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save"; 
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
 const TablaBalance = () => {
@@ -107,6 +107,16 @@ const TablaBalance = () => {
     setEditingMonth(index);
   };
 
+  const handleAddCategory = () => {
+    const newData = [...data];
+    const newCategory = prompt("Ingrese el nombre de la nueva categoría");
+    if (newCategory !== null) {
+      const newCategoryExpenses = months.map(month => ({ month, amount: 0 }));
+      newData.splice(1, 0, { category: newCategory, expenses: newCategoryExpenses });
+      setData(newData);
+    }
+  };
+
   
 
   return (
@@ -124,7 +134,13 @@ const TablaBalance = () => {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead style={{ background: "#628979" }}>
             <TableRow>
-              <TableCell style={{ color: "white" }}></TableCell>
+              <TableCell style={{ color: "white" }}> <IconButton
+                        aria-label="delete"
+                        color="error"
+                        
+                      >
+                        <AddCircleIcon onClick={handleAddCategory}/>
+                      </IconButton></TableCell>
               <TableCell style={{ color: "white" }}>Categorias</TableCell>
               {months.map((month, index) => (              
                   <TableCell style={{ color: 'white' }} key={index}>
@@ -162,9 +178,9 @@ const TablaBalance = () => {
                     </TableCell>
                     {item.expenses.map((expense, expenseIndex) => (
                       <TableCell key={expenseIndex}>
-                          <TextField 
+                          <input 
                             disabled={editingMonth !== expenseIndex} 
-                            value={expense.amount} 
+                            value={expense.amount}      
                             style={{width:"150px"}} 
                           />                      
                       </TableCell>
@@ -201,7 +217,7 @@ const TablaBalance = () => {
         </Table>
       </TableContainer>
       <Modal open={isModalOpen} onClose={closeCharts}>
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 800, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24,p: 4,}}>
+        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24,p: 4,}}>
           <AnualChartsBalance data={data} ingresosMensuales={ingresosMensuales}/>
         </Box>
       </Modal>    
