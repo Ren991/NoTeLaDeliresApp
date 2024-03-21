@@ -105,7 +105,7 @@
       {
         "category": "INGRESOS",
         "expenses": [
-          { "month": "January", "amount": 22500 },
+          { "month": "January", "amount": 220500 },
           { "month": "February", "amount": 500 },
           { "month": "March", "amount": 500 },
           { "month": "April", "amount": 500 },

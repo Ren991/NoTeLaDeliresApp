@@ -12,6 +12,7 @@ const TablaBalance = () => {
   const [ingresos, setIngresos] = useState([]);
   const [balanceMensual, setBalanceMensual] = useState([]);
   const [ingresosMensuales, setIngresosMensuales] = useState([]);
+  const [gastosMensuales, setGastosMensuales] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editableValues, setEditableValues] = useState([]);
   const [editingMonth, setEditingMonth] = useState(null);
@@ -51,7 +52,6 @@ const TablaBalance = () => {
               (expense) => expense.month === ingreso.month
             );
             totalGastos += expense ? expense.amount : 0;          
-
           }
         }
         balance.push({
@@ -61,10 +61,11 @@ const TablaBalance = () => {
         gastosMensuales.push(totalGastos)
       }
       setBalanceMensual(balance);
-      setIngresosMensuales(gastosMensuales);
+      setGastosMensuales(gastosMensuales);
       console.log(balance);
     }
   }, [data, ingresos]);
+  
 
   
   const handleEditCategory = (index) => {
@@ -98,12 +99,39 @@ const TablaBalance = () => {
       setEditingMonth(index);
     }
   };
-
   const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
+      
     const newData = [...data];
     const parsedValue = parseFloat(newValue); 
     newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue; 
     setData(newData);
+    
+ 
+  console.log("Ingresos después de la actualización:", gastosMensuales);
+  
+    recalculateMonthlyBalance(newData);
+  };
+  
+  const recalculateMonthlyBalance = (newData) => {
+    const newBalance = [];
+    const newGastosMensuales = [];
+    for (const month of months) {
+      let totalIngresos = 0;
+      let totalGastos = 0;
+      for (const item of newData) {
+        const expense = item.expenses.find(expense => expense.month === month);
+        if (item.category === "INGRESOS") {
+          totalIngresos += expense ? expense.amount :
+          totalIngresos += expense ? expense.amount : 0;
+        } else {
+          totalGastos += expense ? expense.amount : 0;
+        }
+      }
+      newBalance.push({ month, amount: totalIngresos - totalGastos });
+      newGastosMensuales.push(totalGastos);
+    }
+    setBalanceMensual(newBalance);
+    setGastosMensuales(newGastosMensuales);
   };
 
   const handleAddCategory = () => {
@@ -111,7 +139,10 @@ const TablaBalance = () => {
     const newCategory = prompt("Ingrese el nombre de la nueva categoría");
     if (newCategory !== null) {
       const newCategoryExpenses = months.map(month => ({ month, amount: 0 }));
-      newData.splice(1, 0, { category: newCategory, expenses: newCategoryExpenses });
+      // Encuentra el índice de la categoría INGRESOS
+      const ingresosIndex = newData.findIndex(item => item.category === "INGRESOS");
+      // Inserta la nueva categoría justo antes de INGRESOS
+      newData.splice(ingresosIndex, 0, { category: newCategory, expenses: newCategoryExpenses });
       setData(newData);
     }
   };
@@ -193,15 +224,6 @@ const TablaBalance = () => {
               </TableRow>
             ))}
             <TableRow>
-              {/*<TableCell
-                style={{ background: "#54DEA5", color: "white" }}
-              ></TableCell>
-               <TableCell style={{ background: "#54DEA5", color: "white" }}>
-                INGRESOS
-              </TableCell>
-              {ingresos.map((income, index) => (
-                <TableCell key={index}>{income.amount}</TableCell>
-              ))} */}
             </TableRow>
             <TableRow>
               <TableCell
@@ -211,7 +233,18 @@ const TablaBalance = () => {
                 BALANCE MENSUAL
               </TableCell>
               {balanceMensual.map((balance, index) => (
-                <TableCell key={index}>{balance.amount}</TableCell>
+                <TableCell key={index} style={{ borderRadius:"0.5rem",color:"white",backgroundColor: balance.amount < 0 ? 'red' : 'green' }}>{balance.amount}</TableCell>
+              ))}
+            </TableRow>
+            <TableRow>
+              <TableCell
+                style={{ background: "#54DEA5", color: "white" }}
+              ></TableCell>
+              <TableCell style={{ background: "#54DEA5", color: "white" }}>
+                GASTOS MENSUALES
+              </TableCell>
+              {gastosMensuales.map((gasto, index) => (
+                <TableCell key={index}>{gasto}</TableCell>
               ))}
             </TableRow>
           </TableBody>

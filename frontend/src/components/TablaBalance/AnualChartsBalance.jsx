@@ -3,7 +3,8 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 
 const AnualChartsBalance = ({ data , ingresosMensuales}) => {
-  
+   console.log(data);
+   console.log(ingresosMensuales);
   
     if (!data || data.length === 0) {
         return <div>No hay datos disponibles para mostrar</div>;
