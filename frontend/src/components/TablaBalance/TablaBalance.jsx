@@ -99,40 +99,36 @@ const TablaBalance = () => {
       setEditingMonth(index);
     }
   };
+
   const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
-      
     const newData = [...data];
-    const parsedValue = parseFloat(newValue); 
-    newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue; 
+    const parsedValue = parseFloat(newValue);
+    newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
     setData(newData);
-    
- 
-  console.log("Ingresos después de la actualización:", gastosMensuales);
-  
-    recalculateMonthlyBalance(newData);
-  };
-  
-  const recalculateMonthlyBalance = (newData) => {
+
+    recalculateMonthlyBalance(newData); // Recalculamos balance y gastos mensuales
+};
+
+const recalculateMonthlyBalance = (newData) => {
     const newBalance = [];
     const newGastosMensuales = [];
     for (const month of months) {
-      let totalIngresos = 0;
-      let totalGastos = 0;
-      for (const item of newData) {
-        const expense = item.expenses.find(expense => expense.month === month);
-        if (item.category === "INGRESOS") {
-          totalIngresos += expense ? expense.amount :
-          totalIngresos += expense ? expense.amount : 0;
-        } else {
-          totalGastos += expense ? expense.amount : 0;
+        let totalIngresos = 0;
+        let totalGastos = 0;
+        for (const item of newData) {
+            const expense = item.expenses.find(expense => expense.month === month);
+            if (item.category === "INGRESOS") {
+                totalIngresos += expense ? expense.amount : 0;
+            } else {
+                totalGastos += expense ? expense.amount : 0;
+            }
         }
-      }
-      newBalance.push({ month, amount: totalIngresos - totalGastos });
-      newGastosMensuales.push(totalGastos);
+        newBalance.push({ month, amount: totalIngresos - totalGastos });
+        newGastosMensuales.push(totalGastos); // Solo agregar los gastos de la categoría actual
     }
     setBalanceMensual(newBalance);
     setGastosMensuales(newGastosMensuales);
-  };
+};
 
   const handleAddCategory = () => {
     const newData = [...data];
