@@ -38,32 +38,31 @@ const TablaBalance = () => {
   }, []);
 
   useEffect(() => {
-    if (data.length > 0 && ingresos.length > 0) {
-      const balance = [];
-      const gastosMensuales = [];
-      for (const ingreso of ingresos) {
-        let totalGastos = 0;
-        for (const item of data) {
-          if (
-            item.category !== "INGRESOS" &&
-            item.category !== "BALANCE MENSUAL"
-          ) {
-            const expense = item.expenses.find(
-              (expense) => expense.month === ingreso.month
-            );
-            totalGastos += expense ? expense.amount : 0;          
-          }
-        }
-        balance.push({
-          month: ingreso.month,
-          amount: ingreso.amount - totalGastos,
-        });
-        gastosMensuales.push(totalGastos)
+    // Calculate balance and expenses without using for loops
+    const calculateBalanceAndExpenses = () => {
+      if (data.length > 0 && ingresos.length > 0) {
+        const totalIngresos = ingresos.reduce((sum, ingreso) => sum + ingreso.amount, 0);
+        const gastosPorCategoria = data.filter(item => item.category !== "INGRESOS" && item.category !== "BALANCE MENSUAL")
+          .map(item => ({
+            category: item.category,
+            total: item.expenses.reduce((sum, expense) => sum + expense.amount, 0)
+          }));
+        const totalGastos = gastosPorCategoria.reduce((sum, gasto) => sum + gasto.total, 0);
+        const balance = totalIngresos - totalGastos;
+        const gastosMensuales = gastosPorCategoria.map(gasto => gasto.total);
+        setBalanceMensual([{ month: "TOTAL", amount: balance }]);
+        setGastosMensuales(gastosMensuales);
+        console.log(balance); // Optional for debugging
       }
-      setBalanceMensual(balance);
-      setGastosMensuales(gastosMensuales);
-      console.log(balance);
-    }
+    };
+  
+    // Call the calculation function on initial render and dependency changes
+    calculateBalanceAndExpenses();
+  
+    // Clean up any potential side effects (optional)
+    return () => {
+      // Add cleanup logic here if necessary (e.g., removing event listeners)
+    };
   }, [data, ingresos]);
   
 
@@ -103,11 +102,12 @@ const TablaBalance = () => {
   const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
     const newData = [...data];
     const parsedValue = parseFloat(newValue);
-    newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
+    if (newData[categoryIndex].category !== "INGRESOS" && newData[categoryIndex].category !== "BALANCE MENSUAL") {
+      newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
+    }
     setData(newData);
-
-    recalculateMonthlyBalance(newData); // Recalculamos balance y gastos mensuales
-};
+    recalculateMonthlyBalance(newData);
+  };
 
 const recalculateMonthlyBalance = (newData) => {
     const newBalance = [];
@@ -134,15 +134,14 @@ const recalculateMonthlyBalance = (newData) => {
     const newData = [...data];
     const newCategory = prompt("Ingrese el nombre de la nueva categoría");
     if (newCategory !== null) {
-      const newCategoryExpenses = months.map(month => ({ month, amount: 0 }));
-      // Encuentra el índice de la categoría INGRESOS
-      const ingresosIndex = newData.findIndex(item => item.category === "INGRESOS");
-      // Inserta la nueva categoría justo antes de INGRESOS
-      newData.splice(ingresosIndex, 0, { category: newCategory, expenses: newCategoryExpenses });
+      const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
+      newData.splice(newData.length - 2, 0, { category: newCategory, expenses: newCategoryExpenses });
       setData(newData);
     }
+    console.log()
   };
 
+  
   
 
   return (
@@ -207,10 +206,11 @@ const recalculateMonthlyBalance = (newData) => {
                     {item.expenses.map((expense, expenseIndex) => (
                       <TableCell key={expenseIndex}>
                            <input 
-                              type="number"
+                              /* type="number" */
                               disabled={editingMonth !== expenseIndex} 
                               value={expense.amount}
-                              onChange={(e) => handleExpenseChange(index, expenseIndex, e.target.value)} 
+                              onChange={(e) => handleExpenseChange(index, expenseIndex, e.target.value)}
+                            
                               style={{width:"150px", height:"50px" , borderRadius:"0.5rem"}} 
                             />                       
                       </TableCell> 
