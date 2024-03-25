@@ -38,10 +38,8 @@ const TablaBalance = () => {
   }, []);
 
   useEffect(() => {
-    // Define la función para calcular los gastos mensuales
     const calculateMonthlyExpenses = () => {
         const gastosMensuales = data.reduce((acumulador, categoria) => {
-            // Filtrar las categorías diferentes de "INGRESOS"
             if (categoria.category !== "INGRESOS") {
                 categoria.expenses.forEach((gasto, index) => {
                     if (!acumulador[index]) {
