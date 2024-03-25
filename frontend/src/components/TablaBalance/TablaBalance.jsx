@@ -51,13 +51,23 @@ const TablaBalance = () => {
             return acumulador;
         }, []);
 
+        // Calcular los balances mensuales
+        const balancesMensuales = ingresos.map(ingreso => {
+            const balance = ingreso.amount - gastosMensuales.reduce((total, gasto) => total + gasto, 0);
+            return { month: ingreso.month, balance };
+        });
+
+        // Actualizar el estado con los balances mensuales
+        setBalanceMensual(balancesMensuales);
+
+        // Actualizar el estado con los gastos mensuales
         setGastosMensuales(gastosMensuales);
     };
-    
 
+    // Llamar a la función para calcular los gastos mensuales y los balances mensuales
     calculateMonthlyExpenses();
 
-}, [data]); 
+}, [data, ingresos]);
 
   
   const handleEditCategory = (index) => {
@@ -135,7 +145,7 @@ const recalculateMonthlyBalance = (newData) => {
   };
 
   
-  
+  console.log(balanceMensual)
 
   return (
     <div style={{ marginTop: "100px",  width: "70%", marginLeft: "auto", marginRight: "auto" }}>
@@ -222,7 +232,7 @@ const recalculateMonthlyBalance = (newData) => {
                 BALANCE MENSUAL
               </TableCell>
               {balanceMensual.map((balance, index) => (
-                <TableCell key={index} style={{ borderRadius:"0.5rem",color:"white",backgroundColor: balance.amount < 0 ? 'red' : 'green' }}>{balance.amount}</TableCell>
+                  <TableCell key={index} style={{ borderRadius:"0.5rem",color:"white",backgroundColor: balance.balance < 0 ? 'red' : 'green' }}>{balance.balance}</TableCell>
               ))}
             </TableRow>
             <TableRow>
