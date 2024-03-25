@@ -38,33 +38,28 @@ const TablaBalance = () => {
   }, []);
 
   useEffect(() => {
-    // Calculate balance and expenses without using for loops
-    const calculateBalanceAndExpenses = () => {
-      if (data.length > 0 && ingresos.length > 0) {
-        const totalIngresos = ingresos.reduce((sum, ingreso) => sum + ingreso.amount, 0);
-        const gastosPorCategoria = data.filter(item => item.category !== "INGRESOS" && item.category !== "BALANCE MENSUAL")
-          .map(item => ({
-            category: item.category,
-            total: item.expenses.reduce((sum, expense) => sum + expense.amount, 0)
-          }));
-        const totalGastos = gastosPorCategoria.reduce((sum, gasto) => sum + gasto.total, 0);
-        const balance = totalIngresos - totalGastos;
-        const gastosMensuales = gastosPorCategoria.map(gasto => gasto.total);
-        setBalanceMensual([{ month: "TOTAL", amount: balance }]);
+    // Define la función para calcular los gastos mensuales
+    const calculateMonthlyExpenses = () => {
+        const gastosMensuales = data.reduce((acumulador, categoria) => {
+            // Filtrar las categorías diferentes de "INGRESOS"
+            if (categoria.category !== "INGRESOS") {
+                categoria.expenses.forEach((gasto, index) => {
+                    if (!acumulador[index]) {
+                        acumulador[index] = 0;
+                    }
+                    acumulador[index] += gasto.amount;
+                });
+            }
+            return acumulador;
+        }, []);
+
         setGastosMensuales(gastosMensuales);
-        console.log(balance); // Optional for debugging
-      }
     };
-  
-    // Call the calculation function on initial render and dependency changes
-    calculateBalanceAndExpenses();
-  
-    // Clean up any potential side effects (optional)
-    return () => {
-      // Add cleanup logic here if necessary (e.g., removing event listeners)
-    };
-  }, [data, ingresos]);
-  
+    
+
+    calculateMonthlyExpenses();
+
+}, [data]); 
 
   
   const handleEditCategory = (index) => {
