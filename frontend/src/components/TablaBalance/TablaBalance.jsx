@@ -25,12 +25,10 @@ const TablaBalance = () => {
         setData(jsonData.data);
         setIngresos(
           jsonData.data.find((item) => item.category === "INGRESOS").expenses
-        );
-        
+        );        
       } catch (error) {
         console.error("Error fetching data:", error);
-      }
-      
+      }      
     };
 
     fetchData();
@@ -51,24 +49,27 @@ const TablaBalance = () => {
             return acumulador;
         }, []);
 
-        // Calcular los balances mensuales
         const balancesMensuales = ingresos.map(ingreso => {
             const balance = ingreso.amount - gastosMensuales.reduce((total, gasto) => total + gasto, 0);
             return { month: ingreso.month, balance };
         });
 
-        // Actualizar el estado con los balances mensuales
         setBalanceMensual(balancesMensuales);
-
-        // Actualizar el estado con los gastos mensuales
         setGastosMensuales(gastosMensuales);
     };
 
-    // Llamar a la función para calcular los gastos mensuales y los balances mensuales
     calculateMonthlyExpenses();
 
 }, [data, ingresos]);
 
+useEffect(() => {
+  const initialBalances = ingresos.map(ingreso => {
+      const totalGastos = data.filter(item => item.category !== "INGRESOS" && item.category !== "BALANCE MENSUAL")
+                              .reduce((total, category) => total + (category.expenses.find(expense => expense.month === ingreso.month)?.amount || 0), 0);
+      return { month: ingreso.month, balance: ingreso.amount - totalGastos };
+  });
+  setBalanceMensual(initialBalances);
+}, [data, ingresos]);
   
   const handleEditCategory = (index) => {
     const newData = [...data];
@@ -105,35 +106,25 @@ const TablaBalance = () => {
   const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
     const newData = [...data];
     const parsedValue = parseFloat(newValue);
-    if (newData[categoryIndex].category !== "INGRESOS" && newData[categoryIndex].category !== "BALANCE MENSUAL") {
-      newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
-    }
-    setData(newData);
-    recalculateMonthlyBalance(newData);
-  };
 
-const recalculateMonthlyBalance = (newData) => {
-    const newBalance = [];
-    const newGastosMensuales = [];
-    for (const month of months) {
-        let totalIngresos = 0;
-        let totalGastos = 0;
-        for (const item of newData) {
-            const expense = item.expenses.find(expense => expense.month === month);
-            if (item.category === "INGRESOS") {
-                totalIngresos += expense ? expense.amount : 0;
-            } else {
-                totalGastos += expense ? expense.amount : 0;
-            }
+    if (newData[categoryIndex].category === "INGRESOS") {
+        newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
+    } else {
+        if (newData[categoryIndex].category !== "BALANCE MENSUAL") {
+            newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
         }
-        newBalance.push({ month, amount: totalIngresos - totalGastos });
-        newGastosMensuales.push(totalGastos); // Solo agregar los gastos de la categoría actual
     }
-    setBalanceMensual(newBalance);
-    setGastosMensuales(newGastosMensuales);
+
+    setData(newData);
+
+    const month = months[monthIndex];
+    const totalGastos = newData.filter(item => item.category !== "INGRESOS" && item.category !== "BALANCE MENSUAL")
+                                .reduce((total, category) => total + (category.expenses.find(expense => expense.month === month)?.amount || 0), 0);
+    const newBalance = ingresos.find(ingreso => ingreso.month === month).amount - totalGastos;
+    setBalanceMensual(prevBalances => prevBalances.map(balance => balance.month === month ? { ...balance, balance: newBalance } : balance));
 };
 
-  const handleAddCategory = () => {
+const handleAddCategory = () => {
     const newData = [...data];
     const newCategory = prompt("Ingrese el nombre de la nueva categoría");
     if (newCategory !== null) {
