@@ -13,7 +13,7 @@ const TablaBalance = () => {
   const [balanceMensual, setBalanceMensual] = useState([]);
   const [ingresosMensuales, setIngresosMensuales] = useState([]);
   const [gastosMensuales, setGastosMensuales] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAnualModalOpen, setisAnualModalOpen] = useState(false);
   const [editableValues, setEditableValues] = useState([]);
   const [editingMonth, setEditingMonth] = useState(null);
 
@@ -87,12 +87,12 @@ useEffect(() => {
     setData(newData);
   }; 
 
-  const openCharts = () => {
-    setIsModalOpen(true);
+  const openAnualCharts = () => {
+    setisAnualModalOpen(true);
   };
 
-  const closeCharts = () => {
-    setIsModalOpen(false);
+  const closeAnualCharts = () => {
+    setisAnualModalOpen(false);
   };
 
   const editarMes = (index) => () => {
@@ -144,7 +144,7 @@ const handleAddCategory = () => {
       <div style={{display:"flex",justifyContent:"space-around"}}>
       <Button>{"<"}</Button>
         <h3>Balance anual 2024</h3>        
-          <Button variant="text" onClick={openCharts}>
+          <Button variant="text" onClick={openAnualCharts}>
             Mostrar Gráficos
           </Button>        
         <Button>{">"}</Button>
@@ -241,11 +241,12 @@ const handleAddCategory = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Modal open={isModalOpen} onClose={closeCharts}>
+      <Modal open={isAnualModalOpen} onClose={closeAnualCharts}>
         <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24,p: 4,}}>
           <AnualChartsBalance data={data} ingresosMensuales={ingresosMensuales} gastosMensuales={gastosMensuales}/>
         </Box>
-      </Modal>    
+      </Modal>
+
     </div>
   );
 };
