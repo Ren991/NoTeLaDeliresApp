@@ -56,6 +56,7 @@ const TablaBalance = () => {
 
         setBalanceMensual(balancesMensuales);
         setGastosMensuales(gastosMensuales);
+        console.log(gastosMensuales)
     };
 
     calculateMonthlyExpenses();
@@ -136,7 +137,7 @@ const handleAddCategory = () => {
   };
 
   
-  console.log(balanceMensual)
+  
 
   return (
     <div style={{ marginTop: "100px",  width: "70%", marginLeft: "auto", marginRight: "auto" }}>
@@ -217,9 +218,9 @@ const handleAddCategory = () => {
             </TableRow>
             <TableRow>
               <TableCell
-                style={{ background: "#54DEA5", color: "white" }}
+                style={{ background: "black", color: "white" }}
               ></TableCell>
-              <TableCell style={{ background: "#54DEA5", color: "white" }}>
+              <TableCell style={{ fontSize:"15px",background: "black", color: "white" }}>
                 BALANCE MENSUAL
               </TableCell>
               {balanceMensual.map((balance, index) => (
@@ -228,9 +229,9 @@ const handleAddCategory = () => {
             </TableRow>
             <TableRow>
               <TableCell
-                style={{ background: "#54DEA5", color: "white" }}
+                style={{ background: "black", color: "white" }}
               ></TableCell>
-              <TableCell style={{ background: "#54DEA5", color: "white" }}>
+              <TableCell style={{fontSize:"15px", background: "black", color: "white" }}>
                 GASTOS MENSUALES
               </TableCell>
               {gastosMensuales.map((gasto, index) => (
@@ -242,7 +243,7 @@ const handleAddCategory = () => {
       </TableContainer>
       <Modal open={isModalOpen} onClose={closeCharts}>
         <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24,p: 4,}}>
-          <AnualChartsBalance data={data} ingresosMensuales={ingresosMensuales}/>
+          <AnualChartsBalance data={data} ingresosMensuales={ingresosMensuales} gastosMensuales={gastosMensuales}/>
         </Box>
       </Modal>    
     </div>
