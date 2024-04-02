@@ -1,5 +1,4 @@
 import { PieChart } from "@mui/x-charts/PieChart";
-
 import { LineChart } from '@mui/x-charts/LineChart';
 
 const AnualChartsBalance = ({ data, gastosMensuales }) => {
@@ -39,7 +38,7 @@ const AnualChartsBalance = ({ data, gastosMensuales }) => {
         },
     ];
 
-    const xLabels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const xLabels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayoo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
     return (
         <div >

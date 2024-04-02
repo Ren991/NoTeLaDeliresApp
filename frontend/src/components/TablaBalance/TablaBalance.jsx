@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import jsonData from "./data.json";
 import AnualChartsBalance from "./AnualChartsBalance";
+import MensualChartsBalance from "./MensualChartsBalance";
 
 const TablaBalance = () => {
   const [data, setData] = useState([]);
@@ -16,7 +17,7 @@ const TablaBalance = () => {
   const [isMonthlyModalOpen, setIsMonthlyModalOpen] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(null);
 
-  const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayoo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   useEffect(() => {
     setData(jsonData.data);
@@ -218,11 +219,9 @@ const TablaBalance = () => {
       </Modal>
 
       <Modal open={isMonthlyModalOpen} onClose={closeMonthlyModal}>
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 600, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}>
+        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 800, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}>
           <h2>{selectedMonth}</h2>
-          
-          <p>Contenido del modal para el mes {selectedMonth}</p>
-         
+          <MensualChartsBalance month={selectedMonth} data={data}/>
         </Box>
       </Modal>
 
