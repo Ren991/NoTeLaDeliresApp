@@ -36,42 +36,31 @@ const TablaBalance = () => {
   }, []);
 
   useEffect(() => {
-    const calculateMonthlyExpenses = () => {
-        const gastosMensuales = data.reduce((acumulador, categoria) => {
-            if (categoria.category !== "INGRESOS") {
-                categoria.expenses.forEach((gasto, index) => {
-                    if (!acumulador[index]) {
-                        acumulador[index] = 0;
-                    }
-                    acumulador[index] += gasto.amount;
-                });
-            }
-            return acumulador;
-        }, []);
+    updateMonthlyData();
+  }, [data, ingresos]);
 
-        const balancesMensuales = ingresos.map(ingreso => {
-            const balance = ingreso.amount - gastosMensuales.reduce((total, gasto) => total + gasto, 0);
-            return { month: ingreso.month, balance };
-        });
+  const updateMonthlyData = () => {
+    const gastosMensuales = data.reduce((acumulador, categoria) => {
+        if (categoria.category !== "INGRESOS") {
+            categoria.expenses.forEach((gasto, index) => {
+                if (!acumulador[index]) {
+                    acumulador[index] = 0;
+                }
+                acumulador[index] += gasto.amount;
+            });
+        }
+        return acumulador;
+    }, []);
 
-        setBalanceMensual(balancesMensuales);
-        setGastosMensuales(gastosMensuales);
-        console.log(gastosMensuales)
-    };
+    const balancesMensuales = ingresos.map(ingreso => {
+        const balance = ingreso.amount - gastosMensuales.reduce((total, gasto) => total + gasto, 0);
+        return { month: ingreso.month, balance };
+    });
 
-    calculateMonthlyExpenses();
+    setBalanceMensual(balancesMensuales);
+    setGastosMensuales(gastosMensuales);
+  };
 
-}, [data, ingresos]);
-
-useEffect(() => {
-  const initialBalances = ingresos.map(ingreso => {
-      const totalGastos = data.filter(item => item.category !== "INGRESOS" && item.category !== "BALANCE MENSUAL")
-                              .reduce((total, category) => total + (category.expenses.find(expense => expense.month === ingreso.month)?.amount || 0), 0);
-      return { month: ingreso.month, balance: ingreso.amount - totalGastos };
-  });
-  setBalanceMensual(initialBalances);
-}, [data, ingresos]);
-  
   const handleEditCategory = (index) => {
     const newData = [...data];
     const newCategory = prompt("Ingrese el nuevo nombre de la categoría");
@@ -105,40 +94,29 @@ useEffect(() => {
   };
 
   const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
-    const newData = [...data];
     const parsedValue = parseFloat(newValue);
-
-    if (newData[categoryIndex].category === "INGRESOS") {
-        newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
-    } else {
-        if (newData[categoryIndex].category !== "BALANCE MENSUAL") {
-            newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
-        }
-    }
-
+    const newData = [...data];
+    
+    // Actualizar el valor del gasto
+    newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
     setData(newData);
+    
+    updateMonthlyData(); // Actualizar gastos mensuales y balance mensual
+  };
 
-    const month = months[monthIndex];
-    const totalGastos = newData.filter(item => item.category !== "INGRESOS" && item.category !== "BALANCE MENSUAL")
-                                .reduce((total, category) => total + (category.expenses.find(expense => expense.month === month)?.amount || 0), 0);
-    const newBalance = ingresos.find(ingreso => ingreso.month === month).amount - totalGastos;
-    setBalanceMensual(prevBalances => prevBalances.map(balance => balance.month === month ? { ...balance, balance: newBalance } : balance));
-};
-
-const handleAddCategory = () => {
+  const handleAddCategory = () => {
     const newData = [...data];
     const newCategory = prompt("Ingrese el nombre de la nueva categoría");
     if (newCategory !== null) {
       const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
       newData.splice(newData.length - 2, 0, { category: newCategory, expenses: newCategoryExpenses });
       setData(newData);
+  
+      // Recalcular gastos mensuales y balance mensual
+      updateMonthlyData();
     }
-    console.log()
   };
-
   
-  
-
   return (
     <div style={{ marginTop: "100px",  width: "70%", marginLeft: "auto", marginRight: "auto" }}>
       <div style={{display:"flex",justifyContent:"space-around"}}>
@@ -204,8 +182,7 @@ const handleAddCategory = () => {
                               /* type="number" */
                               disabled={editingMonth !== expenseIndex} 
                               value={expense.amount}
-                              onChange={(e) => handleExpenseChange(index, expenseIndex, e.target.value)}
-                            
+                              onChange={(e) => handleExpenseChange(index, expenseIndex, e.target.value)}                            
                               style={{width:"150px", height:"50px" , borderRadius:"0.5rem"}} 
                             />                       
                       </TableCell> 
