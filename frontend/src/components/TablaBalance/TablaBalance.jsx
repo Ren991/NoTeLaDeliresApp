@@ -7,6 +7,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import jsonData from "./data.json";
 import AnualChartsBalance from "./AnualChartsBalance";
 import MensualChartsBalance from "./MensualChartsBalance";
+import Swal from "sweetalert2";
 
 const TablaBalance = () => {
   const [data, setData] = useState([]);
@@ -54,19 +55,42 @@ const TablaBalance = () => {
   };
 
   const handleEditCategory = (index) => {
-    const newData = [...data];
-    const newCategory = prompt("Ingrese el nuevo nombre de la categoría");
-    if (newCategory !== null) {
-      newData[index].category = newCategory;
-      setData(newData);
-    }
-  };
+        const newData = [...data];
+        Swal.fire({
+            title: "Ingrese el nuevo nombre de la categoría",
+            input: "text",
+            showCancelButton: true,
+            confirmButtonText: "Guardar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newCategory = result.value;
+                newData[index].category = newCategory;
+                setData(newData);
+            }
+        });
+    };
 
-  const handleDeleteRow = (index) => {
-    const newData = [...data];
-    newData.splice(index, 1);
-    setData(newData);
-  };
+    const handleDeleteRow = (index) => {
+        Swal.fire({
+            title: "¿Está seguro de que desea eliminar esta categoría?",
+            text: "Esta acción no se puede deshacer",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newData = [...data];
+                newData.splice(index, 1);
+                setData(newData);
+                Swal.fire("Eliminado", "La categoría ha sido eliminada correctamente", "success");
+            }
+        });
+    };
+
 
   const openAnualCharts = () => {
     setIsAnualModalOpen(true);
@@ -96,13 +120,21 @@ const TablaBalance = () => {
   };
 
   const handleAddCategory = () => {
-    const newData = [...data];
-    const newCategory = prompt("Ingrese el nombre de la nueva categoría");
-    if (newCategory !== null) {
-      const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
-      newData.splice(newData.length - 2, 0, { category: newCategory, expenses: newCategoryExpenses });
-      setData(newData);
-    }
+      Swal.fire({
+          title: "Ingrese el nombre de la nueva categoría",
+          input: "text",
+          showCancelButton: true,
+          confirmButtonText: "Guardar",
+          cancelButtonText: "Cancelar",
+      }).then((result) => {
+          if (result.isConfirmed) {
+              const newCategory = result.value;
+              const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
+              const ingresosIndex = data.findIndex(item => item.category === "INGRESOS");
+              const newData = [...data.slice(0, ingresosIndex), { category: newCategory, expenses: newCategoryExpenses }, ...data.slice(ingresosIndex)];
+              setData(newData);
+          }
+      });
   };
 
   const openMonthlyModal = (month) => {
@@ -219,7 +251,7 @@ const TablaBalance = () => {
       </Modal>
 
       <Modal open={isMonthlyModalOpen} onClose={closeMonthlyModal}>
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 800, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}>
+        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}>
           <h2>{selectedMonth}</h2>
           <MensualChartsBalance month={selectedMonth} data={data}/>
         </Box>
