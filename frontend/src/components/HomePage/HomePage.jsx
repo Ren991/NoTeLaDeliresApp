@@ -2,7 +2,7 @@ import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer'; 
 import { Typography, Container, Button } from '@mui/material';
 
-const Acerca = () => {
+const HomePage = () => {
     return (
         
         <div style={{ background: 'linear-gradient(to bottom, #0f2027, #203a43, #2c5364)', minHeight: '100vh', overflow: 'hidden' }}>
@@ -26,4 +26,4 @@ const Acerca = () => {
     );
 };
 
-export default Acerca;
+export default HomePage;

@@ -3,7 +3,7 @@ import Login from './components/Login/Login'
 import SignUp from './components/Signup/Signup';
 import Home from './components/Home/Home';
 import AnualChartsBalance from './components/TablaBalance/AnualChartsBalance';
-import Acerca from "./components/Acerca/Acerca";
+import HomePage from "./components/HomePage/HomePage";
 
 
 function App() {
@@ -15,11 +15,11 @@ function App() {
       <BrowserRouter>
       
       <Routes>
-        <Route path="/" element={<Login/>}/>
+        <Route path="/login" element={<Login/>}/>
         <Route path="/registrarse" element={<SignUp/>}/>
-        <Route path="/home" element={<Home/>}/>
+        <Route path="/tabla_user" element={<Home/>}/>
         <Route path="/anualCharts" element={<AnualChartsBalance/>}/>
-        <Route path="/acerca" element={<Acerca/>}/>        
+        <Route path="/" element={<HomePage/>}/>        
       </Routes>
       
     </BrowserRouter>
