@@ -13,6 +13,8 @@ const TablaBalance = () => {
   const [isAnualModalOpen, setIsAnualModalOpen] = useState(false);
   const [editingMonth, setEditingMonth] = useState(null);
   const [totalGastos, setTotalGastos] = useState([]);
+  const [isMonthlyModalOpen, setIsMonthlyModalOpen] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(null);
 
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
@@ -102,6 +104,15 @@ const TablaBalance = () => {
     }
   };
 
+  const openMonthlyModal = (month) => {
+    setSelectedMonth(month); // Guardar el mes seleccionado
+    setIsMonthlyModalOpen(true); // Abrir el modal mensual
+  };
+
+  const closeMonthlyModal = () => {
+    setIsMonthlyModalOpen(false);
+  };
+
   return (
     <div style={{ marginTop: "100px", width: "70%", marginLeft: "auto", marginRight: "auto" }}>
       <div style={{ display: "flex", justifyContent: "space-around" }}>
@@ -125,7 +136,7 @@ const TablaBalance = () => {
               <TableCell style={{ color: "white" }}>Categorías</TableCell>
               {months.map((month, index) => (
                 <TableCell style={{ color: 'white' }} key={index}>
-                  <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>{month}</Link>
+                  <Link  style={{ color: 'white', textDecoration: 'none' }} onClick={() => openMonthlyModal(month)}>{month}</Link>
                   <IconButton aria-label="edit" onClick={editarMes(index)}><EditIcon /></IconButton>
                 </TableCell>
               ))}
@@ -203,6 +214,15 @@ const TablaBalance = () => {
       <Modal open={isAnualModalOpen} onClose={closeAnualCharts}>
         <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4, }}>
           <AnualChartsBalance data={data} gastosMensuales={totalGastos}/>
+        </Box>
+      </Modal>
+
+      <Modal open={isMonthlyModalOpen} onClose={closeMonthlyModal}>
+        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 600, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}>
+          <h2>{selectedMonth}</h2>
+          
+          <p>Contenido del modal para el mes {selectedMonth}</p>
+         
         </Box>
       </Modal>
 
