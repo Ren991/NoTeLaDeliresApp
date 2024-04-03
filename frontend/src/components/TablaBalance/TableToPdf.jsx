@@ -1,29 +1,38 @@
 import React from "react";
-import { exportToExcel } from "./ExportUtils"; // Creamos un archivo exportUtils.js para mantener las funciones de exportación separadas
+import { exportToExcel } from "./ExportUtils";
 
-const TableToExcel = ({ data, months }) => {
-  // Función para generar y descargar el archivo Excel
+const TableToExcel = ({ data, months, monthlyBalance, monthlyExpenses }) => {
+  console.log(monthlyExpenses)
+  console.log(monthlyBalance)
+  const balancesMensuales= monthlyBalance.map(item => item.balance);
   const generateExcel = () => {
-    // Preparar los datos para el archivo Excel
-    const excelData = prepareExcelData(data, months);
-
-    // Generar el archivo Excel
+    const excelData = prepareExcelData(data, months, monthlyBalance, monthlyExpenses);
     exportToExcel(excelData, 'Balance.xlsx');
   };
 
-  // Función para preparar los datos para el archivo Excel
-  const prepareExcelData = (data, months) => {
+  const prepareExcelData = (data, months, monthlyBalance, monthlyExpenses) => {
     const excelData = [];
 
     // Encabezados de columna
     const headers = ['Categoría', ...months];
     excelData.push(headers);
 
-    // Filas de datos
-    data.forEach(item => {
-      const rowData = [item.category, ...item.expenses.map(expense => expense.amount)];
+    // Datos de la tabla
+    data.forEach((item) => {
+      const rowData = [
+        item.category,
+        ...item.expenses.map(expense => expense.amount)
+      ];
       excelData.push(rowData);
     });
+
+    // Agregar fila para gastos mensuales
+    const expensesRow = ['Gastos Mensuales', ...monthlyExpenses];
+    excelData.push(expensesRow);
+
+    // Agregar fila para balance mensual
+    const balanceRow = ['Balance Mensual', ...balancesMensuales];
+    excelData.push(balanceRow);
 
     return excelData;
   };
@@ -36,4 +45,3 @@ const TableToExcel = ({ data, months }) => {
 };
 
 export default TableToExcel;
-

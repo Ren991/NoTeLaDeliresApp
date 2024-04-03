@@ -258,7 +258,7 @@ const TablaBalance = () => {
         </Box>
       </Modal>
       
-      <TableToPdf data={data} months={months} />
+      <TableToPdf data={data} months={months} monthlyBalance={balanceMensual} monthlyExpenses={totalGastos}/>
     </div>
   );
 };
