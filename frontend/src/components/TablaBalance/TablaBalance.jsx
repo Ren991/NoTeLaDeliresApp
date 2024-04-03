@@ -8,6 +8,7 @@ import jsonData from "./data.json";
 import AnualChartsBalance from "./AnualChartsBalance";
 import MensualChartsBalance from "./MensualChartsBalance";
 import Swal from "sweetalert2";
+import TableToPdf from "./TableToPdf";
 
 const TablaBalance = () => {
   const [data, setData] = useState([]);
@@ -256,7 +257,8 @@ const TablaBalance = () => {
           <MensualChartsBalance month={selectedMonth} data={data}/>
         </Box>
       </Modal>
-
+      
+      <TableToPdf data={data} months={months} />
     </div>
   );
 };
