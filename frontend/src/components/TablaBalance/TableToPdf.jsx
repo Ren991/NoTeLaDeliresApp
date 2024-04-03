@@ -1,5 +1,6 @@
 import React from "react";
 import { exportToExcel } from "./ExportUtils";
+import { Button } from "@mui/material";
 
 const TableToExcel = ({ data, months, monthlyBalance, monthlyExpenses }) => {
   console.log(monthlyExpenses)
@@ -39,7 +40,8 @@ const TableToExcel = ({ data, months, monthlyBalance, monthlyExpenses }) => {
 
   return (
     <div>
-      <button onClick={generateExcel}>Exportar a Excel</button>
+      
+      <Button variant="text" style={{color:"black",fontSize:"20px"}} onClick={generateExcel}>Exportar a Excel</Button>
     </div>
   );
 };

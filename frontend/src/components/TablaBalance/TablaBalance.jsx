@@ -149,13 +149,13 @@ const TablaBalance = () => {
 
   return (
     <div style={{ marginTop: "100px", width: "70%", marginLeft: "auto", marginRight: "auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        <Button>{"<"}</Button>
-        <h3>Balance anual 2024</h3>
-        <Button variant="text" onClick={openAnualCharts}>
+      <div style={{ display: "flex", justifyContent: "space-around", alignItems:"center"}}>
+        
+        <h3 style={{color:"black",fontSize:"20px"}}>Balance anual 2024</h3>
+        <Button variant="text" style={{color:"black",fontSize:"20px"}} onClick={openAnualCharts}>
           Mostrar Gráficos
         </Button>
-        <Button>{">"}</Button>
+        <TableToPdf data={data} months={months} monthlyBalance={balanceMensual} monthlyExpenses={totalGastos}/>
       </div>
 
       <TableContainer component={Paper}>
@@ -258,7 +258,7 @@ const TablaBalance = () => {
         </Box>
       </Modal>
       
-      <TableToPdf data={data} months={months} monthlyBalance={balanceMensual} monthlyExpenses={totalGastos}/>
+      
     </div>
   );
 };
