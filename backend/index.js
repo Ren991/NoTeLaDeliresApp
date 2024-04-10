@@ -12,3 +12,5 @@ mongoose.connect(mongoURI)
 .catch((error) => {
   console.error('Error al conectar a MongoDB:', error);
 });
+
+
