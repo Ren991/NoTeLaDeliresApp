@@ -1,16 +1,28 @@
+const express = require('express');
 const mongoose = require('mongoose');
+const userRoutes = require('./routes/userRoutes');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-const mongoURI = process.env.MONGODB_URI;
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-mongoose.connect(mongoURI)
-.then(() => {
-  console.log('Conexión a MongoDB establecida correctamente');
-})
-.catch((error) => {
-  console.error('Error al conectar a MongoDB:', error);
+// Conexión a la base de datos
+mongoose.connect(process.env.MONGODB_URI);
+
+// Middleware para parsear el cuerpo de las peticiones como JSON
+app.use(express.json());
+
+// Rutas de usuario
+app.use('/usuarios', userRoutes);
+
+// Ruta de inicio
+app.get('/', (req, res) => {
+  res.send('¡Bienvenido a NoTeLaDelires app!');
 });
 
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
 
