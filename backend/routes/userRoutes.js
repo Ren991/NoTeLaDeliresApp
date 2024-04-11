@@ -1,11 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
+const authController = require('../controllers/userController');
 
-router.post('/registrarse', userController.registrarse);
-router.post('/iniciar-sesion', userController.iniciarSesion);
-router.delete('/eliminar-usuario', userController.eliminarUsuario);
-router.get('/todos', userController.obtenerTodosUsuarios);
 
+// Ruta para registro de usuario
+router.post('/auth/register', authController.register);
+// Ruta para inicio de sesión
+router.post('/auth/login', authController.login);
+// Ruta para cierre de sesión
+router.get('/auth/logout', authController.logout);
+// Ruta para ver los usuarios
+router.get('/users', authController.getAllUsers);
+// Ruta para eliminar usuario
+router.delete('/auth/:id', authController.deleteUser);
 
 module.exports = router;
