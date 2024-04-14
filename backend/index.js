@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const balanceRoutes = require('./routes/balanceRoutes')
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 // Rutas de usuario
 app.use('/usuarios', userRoutes);
+app.use('/balance',balanceRoutes);
 
 // Ruta de inicio
 app.get('/', (req, res) => {
