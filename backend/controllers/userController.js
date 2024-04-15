@@ -61,7 +61,7 @@ exports.login = async (req, res) => {
 
       // Generar token JWT y enviarlo en la respuesta
       const token = generateAccessToken(user);
-      res.json({ message: 'Login exitoso', token });
+      res.json({ message: 'Login exitoso', token:token , id:user._id });
     } else {
       res.status(401).json({ error: 'Credenciales incorrectas' });
     }
