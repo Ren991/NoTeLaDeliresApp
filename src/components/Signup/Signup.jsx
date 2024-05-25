@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,21 +12,62 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate  } from "react-router-dom";
+import { getAuth,createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import Swal from 'sweetalert2'
+import { db } from '../Services/Service';
 
 
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
+
+
+
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+
+  const navigate = useNavigate();
+
+  const auth = getAuth();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    console.log(data.get("firstName"));
+    console.log(data.get("lastName"));
+    console.log(data.get("email"));
+    const email = data.get("email");
+    const firstName = data.get("firstName");
+    const lastName = data.get("lastName");
+    const password = data.get("password");
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(userCredential);
+      const user = userCredential.user;
+      console.log(user);
+      const userDocRef = doc(db, 'users', user.uid);
+      await setDoc(userDocRef, {
+          nombre:data.get("firstName"),
+          apellido:data.get("lastName"),
+          email:data.get("email"),
+         
+          balance: [] //para guardar los balances.
+      });
+
+      
+      navigate(("/login"));
+  } catch (error) {
+      console.error('Error signing up:', error);
+      Swal.fire({
+          title: 'Error!',
+          text: 'Error al registrarse, intentente nuevamente.',
+          icon: 'error',
+          confirmButtonText: 'Salir'
+        })
+  }
   };
 
   return (
@@ -102,11 +143,16 @@ export default function SignUp() {
               Registrarse
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
+              <Grid item xs>
+                <Link href="#" variant="body2" onClick={()=> navigate("/login")}>
                   Ya tiene una cuenta? Iniciar sesión
                 </Link>
               </Grid>
+              <Grid item >
+                  <Link href="#" variant="body2" onClick={()=> navigate("/")}>
+                    Menu principal
+                  </Link>
+                </Grid>
             </Grid>
           </Box>
         </Box>

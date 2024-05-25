@@ -12,6 +12,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate  } from "react-router-dom";
+
 
 
 
@@ -20,6 +22,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const defaultTheme = createTheme();
 
 export default function Login() {
+
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -101,12 +106,12 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Olvidó su contraseña?
+                  <Link href="#" variant="body2" onClick={()=> navigate("/")}>
+                    Menu principal
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="#" variant="body2" onClick={()=> navigate("/registrarse")}>
                     {"No tienes cuenta? Registrarse"}
                   </Link>
                 </Grid>

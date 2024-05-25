@@ -8,7 +8,6 @@ import Instructivo from "./components/Instructivo/Instructivo";
 
 
 function App() {
-  console.log("HOLIS")
 
   return (
     <>
