@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,14 +9,17 @@ import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from '@mui/material/Backdrop';
+
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate  } from "react-router-dom";
-
-
-
-
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import {auth,db} from "../Services/Service";
+import { doc, getDoc } from 'firebase/firestore';
+import Swal from 'sweetalert2'
 
 
 const defaultTheme = createTheme();
@@ -24,15 +27,55 @@ const defaultTheme = createTheme();
 export default function Login() {
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    window.location.href = "/home";
+    const email = data.get('email');
+    const password = data.get("password");
+
+    setLoading(true); // Mostrar Backdrop
+
+   
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("Login exitoso");
+        console.log("User:", user);
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            console.log(userData);
+            const token = await user.getIdToken();
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('token', token);
+            setLoading(false); // Ocultar Backdrop
+
+            navigate("/tabla_user")
+        } else {  
+            setLoading(false); // Ocultar Backdrop
+             
+            Swal.fire({
+                title: 'Error!',
+                text: 'Credenciales Inválidas',
+                icon: 'error',
+                confirmButtonText: 'Salir'
+              })
+        }           
+    }catch(err){
+      setLoading(false); // Ocultar Backdrop
+
+        Swal.fire({
+            title: 'Error!',
+            text: 'Credenciales Inválidas',
+            icon: 'error',
+            confirmButtonText: 'Salir'
+          })              
+    }
+    //window.location.href = "/tabla_user";
   };
 
   return (
@@ -45,7 +88,7 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+            backgroundImage: 'url(https://www.corporacionbi.com/gt/financieraindustrial/wp-content/uploads/2023/01/banner-ef-balance-general-condensado-mensual.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -121,6 +164,9 @@ export default function Login() {
           </Box>
         </Grid>
       </Grid>
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </ThemeProvider>
   );
 }

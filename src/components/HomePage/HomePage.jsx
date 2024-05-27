@@ -12,7 +12,7 @@ const HomePage = () => {
         
         <div style={{ background: 'linear-gradient(to bottom, #0f2027, #203a43, #2c5364)', minHeight: '100vh', overflow: 'hidden' }}>
             <Navbar />
-            <Container style={{ textAlign: 'center', paddingTop: '100px', paddingBottom: '100px', color: '#fff', minHeight:"650px" }}>
+            <Container style={{ textAlign: 'center', paddingTop: '100px',  color: '#fff', minHeight:"960px" }}>
                 <Typography variant="h1" gutterBottom>
                     Gestiona tus finanzas
                 </Typography>

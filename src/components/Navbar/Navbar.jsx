@@ -1,4 +1,5 @@
-import * as React from 'react';
+
+import { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,6 +16,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useNavigate  } from "react-router-dom";
+import { getAuth, signOut } from 'firebase/auth';
 
 
 const drawerWidth = 240;
@@ -22,11 +24,22 @@ const navItems = ["Salir","Instructivo"];
 
 function Navbar(props) {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    
+
+    const user = localStorage.getItem('user');
+    setIsAuthenticated(!!user);
+
+  }, []);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -45,6 +58,28 @@ function Navbar(props) {
       </List>
     </Box>
   );
+
+  const handleNavItemClick = (item) => {
+    if (item === "Salir") {
+      handleLogout(); // Navegar a la ruta de logout
+    } else if (item === "Instructivo") {
+      navigate('/instructivo');  // Navegar a la ruta de instructivo
+    }
+  };
+
+  const handleLogout = async () => {
+    const auth = getAuth();
+    try {
+      await signOut(auth);
+      console.log("Logout exitoso");
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      setIsAuthenticated(false);
+      navigate('/'); // Redirigir a la página de inicio de sesión
+    } catch (error) {
+      console.error("Error cerrando sesión:", error);
+    }
+  };
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -66,16 +101,20 @@ function Navbar(props) {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            style={{cursor:"pointer"}}
+            onClick={()=>navigate("/")}
             
           >
              No te la delires App
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
-              </Button>
-            ))}
+            {navItems
+                .filter(item => item !== "Salir" || isAuthenticated)
+                .map((item) => (
+                  <Button key={item} sx={{ color: '#fff' }} onClick={() => handleNavItemClick(item)}>
+                    {item}
+                  </Button>
+                ))}
           </Box>
         </Toolbar>
       </AppBar>
