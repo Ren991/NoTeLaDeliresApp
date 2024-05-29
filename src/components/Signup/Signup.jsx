@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,11 +17,7 @@ import { getAuth,createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2'
 import { db } from '../Services/Service';
-
-
-
-
-
+import { useUser } from '../../Context/UserContext';
 
 
 
@@ -29,9 +25,14 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
 
+
   const navigate = useNavigate();
+  const { user } = useUser();
+
 
   const auth = getAuth();
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -69,6 +70,12 @@ export default function SignUp() {
         })
   }
   };
+
+  useEffect(() => {
+    if (user !== null) {
+     navigate("/tabla_user")
+    }
+  }, [user]);
 
   return (
     <ThemeProvider theme={defaultTheme}>

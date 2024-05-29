@@ -44,7 +44,6 @@ const TablaBalance = () => {
     });
   
     setTotalGastos(gastosMensuales);
-    console.log(gastosMensuales);
   
     const balancesMensuales = ingresos.map((ingreso, index) => {
       const balance = ingreso.amount - (gastosMensuales[index] || 0);
@@ -52,7 +51,6 @@ const TablaBalance = () => {
     });
   
     setBalanceMensual(balancesMensuales);
-    console.log(balancesMensuales);
   };
 
   const handleEditCategory = (index) => {
@@ -102,7 +100,6 @@ const TablaBalance = () => {
   };
 
   const editarMes = (index) => () => {
-    console.log('Editando el mes:', months[index]);
     if (editingMonth === index) {
       setEditingMonth(null);
     } else {

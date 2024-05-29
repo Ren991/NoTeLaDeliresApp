@@ -3,8 +3,7 @@ import { exportToExcel } from "./ExportUtils";
 import { Button } from "@mui/material";
 
 const TableToExcel = ({ data, months, monthlyBalance, monthlyExpenses }) => {
-  console.log(monthlyExpenses)
-  console.log(monthlyBalance)
+ 
   const balancesMensuales= monthlyBalance.map(item => item.balance);
   const generateExcel = () => {
     const excelData = prepareExcelData(data, months, monthlyBalance, monthlyExpenses);

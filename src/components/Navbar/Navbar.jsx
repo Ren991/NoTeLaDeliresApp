@@ -17,29 +17,33 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useNavigate  } from "react-router-dom";
 import { getAuth, signOut } from 'firebase/auth';
+import { useUser } from '../../Context/UserContext';
+
 
 
 const drawerWidth = 240;
 const navItems = ["Salir","Instructivo"];
 
-function Navbar(props) {
-  const { window } = props;
+function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  const { user } = useUser();
+  console.log(user);
+  const { signOut } = useUser();
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
   useEffect(() => {
-    
-
-    const user = localStorage.getItem('user');
-    setIsAuthenticated(!!user);
-
-  }, []);
+    if (user !== null) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [user]);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -61,27 +65,30 @@ function Navbar(props) {
 
   const handleNavItemClick = (item) => {
     if (item === "Salir") {
-      handleLogout(); // Navegar a la ruta de logout
+      //handleLogout(); // Navegar a la ruta de logout
+      
+      signOut();
+      navigate('/');
     } else if (item === "Instructivo") {
       navigate('/instructivo');  // Navegar a la ruta de instructivo
     }
   };
 
   const handleLogout = async () => {
+
     const auth = getAuth();
     try {
       await signOut(auth);
-      console.log("Logout exitoso");
       localStorage.removeItem('user');
       localStorage.removeItem('token');
       setIsAuthenticated(false);
+      
       navigate('/'); // Redirigir a la página de inicio de sesión
     } catch (error) {
       console.error("Error cerrando sesión:", error);
     }
   };
 
-  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -120,7 +127,6 @@ function Navbar(props) {
       </AppBar>
       <nav>
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -139,9 +145,7 @@ function Navbar(props) {
   );
 }
 
-Navbar.propTypes = {
- 
-  window: PropTypes.func,
-};
+
+
 
 export default Navbar;

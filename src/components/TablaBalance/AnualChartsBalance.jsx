@@ -2,7 +2,6 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { LineChart } from '@mui/x-charts/LineChart';
 
 const AnualChartsBalance = ({ data, gastosMensuales }) => {
-    console.log(data);
 
     if (!data || data.length === 0) {
         return <div>No hay datos disponibles para mostrar</div>;

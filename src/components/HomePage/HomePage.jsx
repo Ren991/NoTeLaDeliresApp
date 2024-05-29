@@ -2,16 +2,23 @@ import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer'; 
 import { Typography, Container, Button } from '@mui/material';
 import { useNavigate  } from "react-router-dom";
+import { useEffect } from 'react';
+import { useUser } from '../../Context/UserContext';
+import PropTypes from 'prop-types';
 
-const HomePage = () => {
+
+
+
+const HomePage = (onLogout) => {
 
     const navigate = useNavigate();
-
+    const { user } = useUser();
+   
  
     return (
         
         <div style={{ background: 'linear-gradient(to bottom, #0f2027, #203a43, #2c5364)', minHeight: '100vh', overflow: 'hidden' }}>
-            <Navbar />
+            <Navbar onLogout={onLogout}/>
             <Container style={{ textAlign: 'center', paddingTop: '100px',  color: '#fff', minHeight:"960px" }}>
                 <Typography variant="h1" gutterBottom>
                     Gestiona tus finanzas
@@ -30,5 +37,7 @@ const HomePage = () => {
         
     );
 };
+
+
 
 export default HomePage;

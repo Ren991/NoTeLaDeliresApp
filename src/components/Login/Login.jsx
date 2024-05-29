@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,16 +19,33 @@ import { useNavigate  } from "react-router-dom";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import {auth,db} from "../Services/Service";
 import { doc, getDoc } from 'firebase/firestore';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { useUser } from '../../Context/UserContext';
+
+
 
 
 const defaultTheme = createTheme();
 
 export default function Login() {
 
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+  const { setUser } = useUser();
+  const [loading, setLoading] = useState(false);
+  const { signIn } = useUser();
+  const {user} = useUser();
+
+
+  useEffect(() => {
+    if (user !== null) {
+     navigate("/tabla_user")
+    }
+  }, [user]);
+
+  const NavHome =()=>{
+    navigate("/tabla_user");
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -40,21 +57,26 @@ export default function Login() {
    
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log(userCredential)
         const user = userCredential.user;
-        console.log("Login exitoso");
-        console.log("User:", user);
+     
         const userDocRef = doc(db, 'users', user.uid);
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
+            console.log("Entró")
             const userData = userDoc.data();
             console.log(userData);
             const token = await user.getIdToken();
+            console.log(token);
             localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('token', token);
-            setLoading(false); // Ocultar Backdrop
-
-            navigate("/tabla_user")
+            localStorage.setItem('token', token);            
+            const dataUser = { email, token: token };
+            signIn(dataUser);
+            NavHome();
+            setLoading(false);  // Ocultar Backdrop         
+            
+            
         } else {  
             setLoading(false); // Ocultar Backdrop
              
@@ -75,7 +97,6 @@ export default function Login() {
             confirmButtonText: 'Salir'
           })              
     }
-    //window.location.href = "/tabla_user";
   };
 
   return (
