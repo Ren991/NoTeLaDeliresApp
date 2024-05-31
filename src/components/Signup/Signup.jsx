@@ -29,32 +29,23 @@ export default function SignUp() {
   const navigate = useNavigate();
   const { user } = useUser();
 
-
   const auth = getAuth();
-
-
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get("firstName"));
-    console.log(data.get("lastName"));
-    console.log(data.get("email"));
+ 
     const email = data.get("email");
     const firstName = data.get("firstName");
     const lastName = data.get("lastName");
     const password = data.get("password");
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
       const user = userCredential.user;
-      console.log(user);
       const userDocRef = doc(db, 'users', user.uid);
       await setDoc(userDocRef, {
           nombre:data.get("firstName"),
           apellido:data.get("lastName"),
-          email:data.get("email"),
-         
+          email:data.get("email"),         
           balance: [
             {
               "data": [

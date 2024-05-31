@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button, Modal, Box } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -19,13 +19,21 @@ const TablaBalance = () => {
   const [totalGastos, setTotalGastos] = useState([]);
   const [isMonthlyModalOpen, setIsMonthlyModalOpen] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(null);
+  const navigate = useNavigate();
 
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-
   useEffect(() => {
     if (user && user.balanceAnual && user.balanceAnual.length > 0) {
       setData(user.balanceAnual[0].data);
-      console.log(data);
+    }else{
+      Swal.fire({
+        title: 'Error!',
+        text: 'Error al recuperar los datos. Vuelva a intentarlo nuevamente',
+        icon: 'error',
+        confirmButtonText: 'Salir'
+      })
+      
+      navigate("/")
     }
   }, [user]);
 

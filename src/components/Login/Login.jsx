@@ -51,51 +51,48 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
     const password = data.get("password");
-
+  
     setLoading(true); // Mostrar Backdrop
-
-   
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        console.log(userCredential)
-        const user = userCredential.user;
-     
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
-
-        if (userDoc.exists()) {
-            console.log("Entró")
-            const userData = userDoc.data();
-            console.log(userData);
-            const token = await user.getIdToken();
-            console.log(token);
-            localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('token', token);            
-            const dataUser = { email, token: token, balanceAnual: userData.balance };
-            signIn(dataUser);
-            NavHome();
-            setLoading(false);  // Ocultar Backdrop         
-            
-            
-        } else {  
-            setLoading(false); // Ocultar Backdrop
-             
-            Swal.fire({
-                title: 'Error!',
-                text: 'Credenciales Inválidas',
-                icon: 'error',
-                confirmButtonText: 'Salir'
-              })
-        }           
-    }catch(err){
-      setLoading(false); // Ocultar Backdrop
-
+  
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const token = await user.getIdToken();
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', token);
+  
+        // Verificar si balanceAnual existe y no está vacío
+        const balanceAnual = userData.balance && userData.balance.length > 0 ? userData.balance : [];
+        const dataUser = { email, token: token, balanceAnual: balanceAnual };
+  
+        signIn(dataUser);
+        NavHome();
+        setLoading(false); // Ocultar Backdrop
+      } else {
+        setLoading(false); // Ocultar Backdrop
+  
         Swal.fire({
-            title: 'Error!',
-            text: 'Credenciales Inválidas',
-            icon: 'error',
-            confirmButtonText: 'Salir'
-          })              
+          title: 'Error!',
+          text: 'Credenciales Inválidas',
+          icon: 'error',
+          confirmButtonText: 'Salir'
+        });
+      }
+    } catch (err) {
+      setLoading(false); // Ocultar Backdrop
+  
+      Swal.fire({
+        title: 'Error!',
+        text: 'Credenciales Inválidas',
+        icon: 'error',
+        confirmButtonText: 'Salir'
+      });
     }
   };
 

@@ -22,6 +22,7 @@ export const UserProvider = ({ children }) => {
 
   const signIn = (userData) => {
     setUser(userData);
+    
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', userData.token);
 

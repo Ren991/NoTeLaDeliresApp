@@ -31,7 +31,6 @@ function Navbar() {
 
   const navigate = useNavigate();
   const { user } = useUser();
-  console.log(user);
   const { signOut } = useUser();
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
