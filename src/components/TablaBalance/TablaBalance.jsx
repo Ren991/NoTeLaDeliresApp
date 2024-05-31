@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import jsonData from "./data.json";
 import AnualChartsBalance from "./AnualChartsBalance";
 import MensualChartsBalance from "./MensualChartsBalance";
 import Swal from "sweetalert2";
 import TableToPdf from "./TableToPdf";
+import { useUser } from "../../Context/UserContext";
 
 const TablaBalance = () => {
+  const { user } = useUser();
   const [data, setData] = useState([]);
   const [balanceMensual, setBalanceMensual] = useState([]);
   const [isAnualModalOpen, setIsAnualModalOpen] = useState(false);
@@ -19,11 +20,14 @@ const TablaBalance = () => {
   const [isMonthlyModalOpen, setIsMonthlyModalOpen] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(null);
 
-  const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayoo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   useEffect(() => {
-    setData(jsonData.data);
-  }, []);
+    if (user && user.balanceAnual && user.balanceAnual.length > 0) {
+      setData(user.balanceAnual[0].data);
+      console.log(data);
+    }
+  }, [user]);
 
   useEffect(() => {
     updateMonthlyData();
@@ -31,7 +35,7 @@ const TablaBalance = () => {
 
   const updateMonthlyData = () => {
     const ingresos = data.find(item => item.category === "INGRESOS")?.expenses || [];
-  
+
     const gastosMensuales = months.map((_, monthIndex) => {
       let totalGastosMes = 0;
       data.forEach(categoria => {
@@ -42,54 +46,53 @@ const TablaBalance = () => {
       });
       return totalGastosMes;
     });
-  
+
     setTotalGastos(gastosMensuales);
-  
+
     const balancesMensuales = ingresos.map((ingreso, index) => {
       const balance = ingreso.amount - (gastosMensuales[index] || 0);
       return { month: ingreso.month, balance, gastosMensuales: gastosMensuales[index] };
     });
-  
+
     setBalanceMensual(balancesMensuales);
   };
 
   const handleEditCategory = (index) => {
+    const newData = [...data];
+    Swal.fire({
+      title: "Ingrese el nuevo nombre de la categoría",
+      input: "text",
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newCategory = result.value;
+        newData[index].category = newCategory;
+        setData(newData);
+      }
+    });
+  };
+
+  const handleDeleteRow = (index) => {
+    Swal.fire({
+      title: "¿Está seguro de que desea eliminar esta categoría?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
         const newData = [...data];
-        Swal.fire({
-            title: "Ingrese el nuevo nombre de la categoría",
-            input: "text",
-            showCancelButton: true,
-            confirmButtonText: "Guardar",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const newCategory = result.value;
-                newData[index].category = newCategory;
-                setData(newData);
-            }
-        });
-    };
-
-    const handleDeleteRow = (index) => {
-        Swal.fire({
-            title: "¿Está seguro de que desea eliminar esta categoría?",
-            text: "Esta acción no se puede deshacer",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, eliminar",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const newData = [...data];
-                newData.splice(index, 1);
-                setData(newData);
-                Swal.fire("Eliminado", "La categoría ha sido eliminada correctamente", "success");
-            }
-        });
-    };
-
+        newData.splice(index, 1);
+        setData(newData);
+        Swal.fire("Eliminado", "La categoría ha sido eliminada correctamente", "success");
+      }
+    });
+  };
 
   const openAnualCharts = () => {
     setIsAnualModalOpen(true);
@@ -118,21 +121,21 @@ const TablaBalance = () => {
   };
 
   const handleAddCategory = () => {
-      Swal.fire({
-          title: "Ingrese el nombre de la nueva categoría",
-          input: "text",
-          showCancelButton: true,
-          confirmButtonText: "Guardar",
-          cancelButtonText: "Cancelar",
-      }).then((result) => {
-          if (result.isConfirmed) {
-              const newCategory = result.value;
-              const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
-              const ingresosIndex = data.findIndex(item => item.category === "INGRESOS");
-              const newData = [...data.slice(0, ingresosIndex), { category: newCategory, expenses: newCategoryExpenses }, ...data.slice(ingresosIndex)];
-              setData(newData);
-          }
-      });
+    Swal.fire({
+      title: "Ingrese el nombre de la nueva categoría",
+      input: "text",
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newCategory = result.value;
+        const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
+        const ingresosIndex = data.findIndex(item => item.category === "INGRESOS");
+        const newData = [...data.slice(0, ingresosIndex), { category: newCategory, expenses: newCategoryExpenses }, ...data.slice(ingresosIndex)];
+        setData(newData);
+      }
+    });
   };
 
   const openMonthlyModal = (month) => {
@@ -147,7 +150,6 @@ const TablaBalance = () => {
   return (
     <div style={{ marginTop: "100px", width: "70%", marginLeft: "auto", marginRight: "auto" }}>
       <div style={{ display: "flex", justifyContent: "space-around", alignItems:"center"}}>
-        
         <h3 style={{color:"black",fontSize:"20px"}}>Balance anual 2024</h3>
         <Button variant="text" style={{color:"black",fontSize:"20px"}} onClick={openAnualCharts}>
           Mostrar Gráficos
@@ -167,7 +169,7 @@ const TablaBalance = () => {
               <TableCell style={{ color: "white" }}>Categorías</TableCell>
               {months.map((month, index) => (
                 <TableCell style={{ color: 'white' }} key={index}>
-                  <Link  style={{ color: 'white', textDecoration: 'none' }} onClick={() => openMonthlyModal(month)}>{month}</Link>
+                  <Link style={{ color: 'white', textDecoration: 'none' }} onClick={() => openMonthlyModal(month)}>{month}</Link>
                   <IconButton aria-label="edit" onClick={editarMes(index)}><EditIcon /></IconButton>
                 </TableCell>
               ))}
@@ -196,9 +198,7 @@ const TablaBalance = () => {
                         <EditIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell
-                      style={{ background: "#628979", color: "white" }}
-                    >
+                    <TableCell style={{ background: "#628979", color: "white" }}>
                       {item.category}
                     </TableCell>
                     {item.expenses.map((expense, expenseIndex) => (
@@ -216,8 +216,6 @@ const TablaBalance = () => {
               </TableRow>
             ))}
             <TableRow>
-            </TableRow>
-            <TableRow>
               <TableCell style={{ background: "black", color: "white" }}></TableCell>
               <TableCell style={{ background: "black", color: "white" }}>
                 Gastos Mensuales
@@ -229,9 +227,7 @@ const TablaBalance = () => {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell
-                style={{ background: "black", color: "white" }}
-              ></TableCell>
+              <TableCell style={{ background: "black", color: "white" }}></TableCell>
               <TableCell style={{ fontSize: "15px", background: "black", color: "white" }}>
                 BALANCE MENSUAL
               </TableCell>
@@ -243,7 +239,7 @@ const TablaBalance = () => {
         </Table>
       </TableContainer>
       <Modal open={isAnualModalOpen} onClose={closeAnualCharts}>
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4, }}>
+        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}>
           <AnualChartsBalance data={data} gastosMensuales={totalGastos}/>
         </Box>
       </Modal>
@@ -254,9 +250,8 @@ const TablaBalance = () => {
           <MensualChartsBalance month={selectedMonth} data={data}/>
         </Box>
       </Modal>
-      
-      
     </div>
   );
 };
+
 export default TablaBalance;

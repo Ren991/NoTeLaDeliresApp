@@ -71,7 +71,7 @@ export default function Login() {
             console.log(token);
             localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('token', token);            
-            const dataUser = { email, token: token };
+            const dataUser = { email, token: token, balanceAnual: userData.balance };
             signIn(dataUser);
             NavHome();
             setLoading(false);  // Ocultar Backdrop         

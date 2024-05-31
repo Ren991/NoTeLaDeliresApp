@@ -55,7 +55,132 @@ export default function SignUp() {
           apellido:data.get("lastName"),
           email:data.get("email"),
          
-          balance: [] //para guardar los balances.
+          balance: [
+            {
+              "data": [
+                {
+                  "category": "Alquiler",
+                  "expenses": [
+                    { "month": "Enero", "amount": 0 },
+                    { "month": "Febrero", "amount": 0 },
+                    { "month": "Marzo", "amount": 0 },
+                    { "month": "Abril", "amount": 0 },
+                    { "month": "Mayo", "amount": 0 },
+                    { "month": "Junio", "amount": 0 },
+                    { "month": "Julio", "amount": 0 },
+                    { "month": "Agosto", "amount": 0 },
+                    { "month": "Septiembre", "amount": 0 },
+                    { "month": "Octubre", "amount": 0 },
+                    { "month": "Noviembre", "amount": 0 },
+                    { "month": "Diciembre", "amount": 0 }
+                  ]
+                },
+                {
+                  "category": "Salidas",
+                  "expenses": [
+                    { "month": "Enero", "amount": 0 },
+                    { "month": "Febrero", "amount": 0 },
+                    { "month": "Marzo", "amount": 0 },
+                    { "month": "Abril", "amount": 0 },
+                    { "month": "Mayo", "amount": 0 },
+                    { "month": "Junio", "amount": 0 },
+                    { "month": "Julio", "amount": 0 },
+                    { "month": "Agosto", "amount": 0 },
+                    { "month": "Septiembre", "amount": 0 },
+                    { "month": "Octubre", "amount": 0 },
+                    { "month": "Noviembre", "amount": 0 },
+                    { "month": "Diciembre", "amount": 0 }
+                  ]
+                },
+                {
+                  "category": "Comida",
+                  "expenses": [
+                    { "month": "Enero", "amount": 0 },
+                    { "month": "Febrero", "amount": 0 },
+                    { "month": "Marzo", "amount": 0 },
+                    { "month": "Abril", "amount": 0 },
+                    { "month": "Mayo", "amount": 0 },
+                    { "month": "Junio", "amount": 0 },
+                    { "month": "Julio", "amount": 0 },
+                    { "month": "Agosto", "amount": 0 },
+                    { "month": "Septiembre", "amount": 0 },
+                    { "month": "Octubre", "amount": 0 },
+                    { "month": "Noviembre", "amount": 0 },
+                    { "month": "Diciembre", "amount": 0 }
+                  ]
+                },
+                {
+                  "category": "Servicios",
+                  "expenses": [
+                    { "month": "Enero", "amount": 0 },
+                    { "month": "Febrero", "amount": 0 },
+                    { "month": "Marzo", "amount": 0 },
+                    { "month": "Abril", "amount": 0 },
+                    { "month": "Mayo", "amount": 0 },
+                    { "month": "Junio", "amount": 0 },
+                    { "month": "Julio", "amount": 0 },
+                    { "month": "Agosto", "amount": 0 },
+                    { "month": "Septiembre", "amount": 0 },
+                    { "month": "Octubre", "amount": 0 },
+                    { "month": "Noviembre", "amount": 0 },
+                    { "month": "Diciembre", "amount": 0 }
+                  ]
+                },
+                {
+                  "category": "Tarjeta de crédito",
+                  "expenses": [
+                    { "month": "Enero", "amount": 0 },
+                    { "month": "Febrero", "amount": 0 },
+                    { "month": "Marzo", "amount": 0 },
+                    { "month": "Abril", "amount": 0 },
+                    { "month": "Mayo", "amount": 0 },
+                    { "month": "Junio", "amount": 0 },
+                    { "month": "Julio", "amount": 0 },
+                    { "month": "Agosto", "amount": 0 },
+                    { "month": "Septiembre", "amount": 0 },
+                    { "month": "Octubre", "amount": 0 },
+                    { "month": "Noviembre", "amount": 0 },
+                    { "month": "Diciembre", "amount": 0 }
+                  ]
+                },
+                {
+                  "category": "Inversiones",
+                  "expenses": [
+                    { "month": "Enero", "amount": 0 },
+                    { "month": "Febrero", "amount": 0 },
+                    { "month": "Marzo", "amount": 0 },
+                    { "month": "Abril", "amount": 0 },
+                    { "month": "Mayo", "amount": 0 },
+                    { "month": "Junio", "amount": 0 },
+                    { "month": "Julio", "amount": 0 },
+                    { "month": "Agosto", "amount": 0 },
+                    { "month": "Septiembre", "amount": 0 },
+                    { "month": "Octubre", "amount": 0 },
+                    { "month": "Noviembre", "amount": 0 },
+                    { "month": "Diciembre", "amount": 0 }
+                  ]
+                },
+                {
+                  "category": "INGRESOS",
+                  "expenses": [
+                    { "month": "Enero", "amount": 0 },
+                    { "month": "Febrero", "amount": 0 },
+                    { "month": "Marzo", "amount": 0 },
+                    { "month": "Abril", "amount": 0 },
+                    { "month": "Mayo", "amount": 0 },
+                    { "month": "Junio", "amount": 0 },
+                    { "month": "Julio", "amount": 0 },
+                    { "month": "Agosto", "amount": 0 },
+                    { "month": "Septiembre", "amount": 0 },
+                    { "month": "Octubre", "amount": 0 },
+                    { "month": "Noviembre", "amount": 0 },
+                    { "month": "Diciembre", "amount": 0 }
+                  ]
+                }
+          
+              ]
+            }
+          ] //para guardar los balances.
       });
 
       
@@ -81,14 +206,7 @@ export default function SignUp() {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
+        <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}} >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -98,15 +216,7 @@ export default function SignUp() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="Nombre"
-                  autoFocus
-                />
+                <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="Nombre" autoFocus/>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
