@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { Link , useNavigate} from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AnualChartsBalance from "./AnualChartsBalance";
 import MensualChartsBalance from "./MensualChartsBalance";
@@ -20,11 +21,13 @@ const TablaBalance = () => {
   const [isMonthlyModalOpen, setIsMonthlyModalOpen] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const navigate = useNavigate();
+  const [pendingChanges, setPendingChanges] = useState([]); 
+  const [isSaving, setIsSaving] = useState(false); 
+  
 
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   
   useEffect(() => {
-    console.log(user);
     if (user && user.balanceAnual && user.balanceAnual.length > 0) {
       setData(user.balanceAnual[0].data);
     } else {
@@ -105,7 +108,44 @@ const TablaBalance = () => {
 
   const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
     const parsedValue = parseFloat(newValue);
-    updateExpense(categoryIndex, monthIndex, isNaN(parsedValue) ? 0 : parsedValue);
+    const newData = data.map((item, index) => {
+        if (index === categoryIndex) {
+            const updatedExpenses = item.expenses.map((expense, i) => {
+                if (i === monthIndex) {
+                    return { ...expense, amount: isNaN(parsedValue) ? 0 : parsedValue };
+                } else {
+                    return expense;
+                }
+            });
+            return { ...item, expenses: updatedExpenses };
+        } else {
+            return item;
+        }
+    });
+    setData(newData);
+
+    const newChange = { categoryIndex, monthIndex, newValue: isNaN(parsedValue) ? 0 : parsedValue };
+
+    setPendingChanges(prevChanges => {
+        const filteredChanges = prevChanges.filter(change => !(change.categoryIndex === categoryIndex && change.monthIndex === monthIndex));
+        return [...filteredChanges, newChange];
+    });
+};
+
+
+  const savePendingChanges = () => {
+    
+    if(pendingChanges.length >0 ) {
+      updateExpense(data);
+
+    }else{
+      Swal.fire("No hay cambios pendientes");
+    }
+   
+    
+    setIsSaving(true);
+    setPendingChanges([]); 
+    setIsSaving(false);
   };
 
   const handleAddCategory = () => {
@@ -118,7 +158,7 @@ const TablaBalance = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const newCategory = result.value;
-        addCategory(newCategory,months);
+        addCategory(newCategory, months);
       }
     });
   };
@@ -164,6 +204,7 @@ const TablaBalance = () => {
                 <TableCell style={{ color: 'white' }} key={index}>
                   <Link style={{ color: 'white', textDecoration: 'none' }} onClick={() => openMonthlyModal(month)}>{month}</Link>
                   <IconButton aria-label="edit" onClick={editarMes(index)}><EditIcon /></IconButton>
+                  <IconButton aria-label="save"  onClick={() =>  savePendingChanges() }> <CheckCircleIcon/></IconButton>
                 </TableCell>
               ))}
             </TableRow>
@@ -199,7 +240,10 @@ const TablaBalance = () => {
                         <input
                           disabled={editingMonth !== expenseIndex}
                           value={expense.amount}
-                          onChange={(e) => handleExpenseChange(index, expenseIndex, e.target.value)}
+                          onChange={(e) => {
+                            const newValue = e.target.value;
+                            handleExpenseChange(index, expenseIndex, newValue);
+                          }}
                           style={{ width: "150px", height: "50px", borderRadius: "0.5rem" }}
                         />
                       </TableCell>

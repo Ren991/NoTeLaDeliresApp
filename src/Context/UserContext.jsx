@@ -55,6 +55,7 @@ export const UserProvider = ({ children }) => {
       const userDoc = doc(db, 'users', id);
       console.log(userDoc);
       await updateDoc(userDoc, userDoc.balanceAnual = updatedUser );
+      Swal.fire("Cambios guardados")
     } catch (error) {
       console.error('Error updating data: ', error);
       Swal.fire('Error', 'Error al actualizar los datos en Firebase', 'error');
@@ -73,17 +74,21 @@ export const UserProvider = ({ children }) => {
     updateData(newData);
   };
 
-  const updateExpense = (categoryIndex, monthIndex, amount) => {
+ /*  const updateExpense = (categoryIndex, monthIndex, amount) => {
     const newData = [...user.balanceAnual[0].data];
     newData[categoryIndex].expenses[monthIndex].amount = amount;
     updateData(newData);
+  }; */
+
+  const updateExpense = (newData) => {
+    updateData(newData);
+    
   };
 
   const addCategory = (newCategory,months) => {
     const ingresosIndex = user.balanceAnual[0].data.findIndex(item => item.category === "INGRESOS");
 
     if (ingresosIndex !== -1) {
-      // Si se encuentra la categoría "ingresos", insertar la nueva categoría justo antes de ella
       const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
       const newData = [
         ...user.balanceAnual[0].data.slice(0, ingresosIndex),
