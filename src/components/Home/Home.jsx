@@ -8,12 +8,15 @@ function Home() {
   
 
   return (
-    <>
+    <div style={{background: 'linear-gradient(to bottom, #0f2027, #203a43, #2c5364)'}}>
       
       <Navbar/>
-      <TablaBalance/>
-      <Footer/>
-    </>
+      <div style={{background: 'linear-gradient(to bottom, #0f2027, #203a43, #2c5364)'}}>
+        <TablaBalance/>
+        <Footer/>
+      </div>
+     
+    </div>
   )
 }
 

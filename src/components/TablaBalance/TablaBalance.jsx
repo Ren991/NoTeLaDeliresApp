@@ -181,10 +181,10 @@ const TablaBalance = () => {
   };
 
   return (
-    <div style={{ marginTop: "100px", marginBottom:"20px",  width: "70%", marginLeft: "auto", marginRight: "auto" }}>
+    <div style={{ marginTop: "70px", marginBottom:"20px", color:"white",  width: "70%", marginLeft: "auto", marginRight: "auto" }}>
       <div style={{ display: "flex", justifyContent: "space-around", alignItems:"center"}}>
-        <h3 style={{color:"black",fontSize:"20px"}}>Balance anual 2024</h3>
-        <Button variant="text" style={{color:"black",fontSize:"20px"}} onClick={openAnualCharts}>
+        <h3 style={{fontSize:"20px"}}>Balance anual 2024</h3>
+        <Button variant="text" style={{fontSize:"20px", color:"white"}} onClick={openAnualCharts}>
           Mostrar Gráficos
         </Button>
         <TableToPdf data={data} months={months} monthlyBalance={balanceMensual} monthlyExpenses={totalGastos}/>

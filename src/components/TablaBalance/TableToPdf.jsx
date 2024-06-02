@@ -40,7 +40,7 @@ const TableToExcel = ({ data, months, monthlyBalance, monthlyExpenses }) => {
   return (
     <div>
       
-      <Button variant="text" style={{color:"black",fontSize:"20px"}} onClick={generateExcel}>Exportar a Excel</Button>
+      <Button variant="text" style={{fontSize:"20px",color:"white"}} onClick={generateExcel}>Exportar a Excel</Button>
     </div>
   );
 };
