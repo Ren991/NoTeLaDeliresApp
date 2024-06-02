@@ -24,6 +24,7 @@ const TablaBalance = () => {
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   
   useEffect(() => {
+    console.log(user);
     if (user && user.balanceAnual && user.balanceAnual.length > 0) {
       setData(user.balanceAnual[0].data);
     } else {
@@ -117,7 +118,7 @@ const TablaBalance = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const newCategory = result.value;
-        addCategory(newCategory);
+        addCategory(newCategory,months);
       }
     });
   };

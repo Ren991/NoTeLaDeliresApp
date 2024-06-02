@@ -69,7 +69,7 @@ export default function Login() {
         localStorage.setItem('id', user.uid); 
   
         // Verificar si balanceAnual existe y no está vacío
-        const balanceAnual = userData.balance && userData.balance.length > 0 ? userData.balance : [];
+        const balanceAnual = userData.balanceAnual && userData.balanceAnual.length > 0 ? userData.balanceAnual : [];
         const dataUser = { email, token: token, balanceAnual: balanceAnual, id: user.uid };
   
         signIn(dataUser);

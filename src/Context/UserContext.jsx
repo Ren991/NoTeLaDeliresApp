@@ -27,6 +27,7 @@ export const UserProvider = ({ children }) => {
 
   const signIn = (userData) => {
     setUser(userData);
+    console.log(userData);
     
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', userData.token);
@@ -78,10 +79,24 @@ export const UserProvider = ({ children }) => {
     updateData(newData);
   };
 
-  const addCategory = (newCategory) => {
-    const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
-    const newData = [...user.balanceAnual[0].data, { category: newCategory, expenses: newCategoryExpenses }];
-    updateData(newData);
+  const addCategory = (newCategory,months) => {
+    const ingresosIndex = user.balanceAnual[0].data.findIndex(item => item.category === "INGRESOS");
+
+    if (ingresosIndex !== -1) {
+      // Si se encuentra la categoría "ingresos", insertar la nueva categoría justo antes de ella
+      const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
+      const newData = [
+        ...user.balanceAnual[0].data.slice(0, ingresosIndex),
+        { category: newCategory, expenses: newCategoryExpenses },
+        ...user.balanceAnual[0].data.slice(ingresosIndex)
+      ];
+      updateData(newData);
+    } else {
+      // Si no se encuentra la categoría "ingresos", simplemente agregar la nueva categoría al final
+      const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
+      const newData = [...user.balanceAnual[0].data, { category: newCategory, expenses: newCategoryExpenses }];
+      updateData(newData);
+    }
   };
 
   return (
