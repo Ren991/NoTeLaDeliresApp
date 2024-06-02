@@ -9,7 +9,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
 const Footer = () => {
   return (
-    <footer style={{ backgroundColor: '#495C4B', color: '#ffffff', padding: '48px 0', marginTop: 'auto' }}>
+    <footer style={{  color: '#ffffff', padding: '48px 0', marginTop: 'auto' }}>
       <Container maxWidth="lg">
         <Grid container spacing={3} justifyContent="space-between">
           <Grid item xs={12} sm={6}>

@@ -51,10 +51,10 @@ const Instructivo = () => {
       ];
 
     return (
-        <>
+        <div style={{background: 'linear-gradient(to bottom, #0f2027, #203a43, #2c5364)',}}>
             <Navbar />
-            <div style={{marginTop: "100px"}}>
-                <Paper elevation={3} style={{ padding: '20px', maxWidth: '70%', margin: 'auto', marginTop: '50px' }}>
+            <div style={{marginTop: "100px" }}>
+                <Paper elevation={3} style={{ background: 'linear-gradient(to bottom, #0f2027, #203a43, #2c5364)',color:"white",padding: '20px', maxWidth: '70%', margin: 'auto', marginTop: '50px' }}>
                     <Typography variant="h4" gutterBottom>
                         Instrucciones de la Aplicación
                     </Typography>
@@ -76,7 +76,7 @@ const Instructivo = () => {
                 </Paper>
             </div>
             <Footer />
-        </>
+        </div>
     );
 };
 
