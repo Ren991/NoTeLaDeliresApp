@@ -27,7 +27,6 @@ export const UserProvider = ({ children }) => {
 
   const signIn = (userData) => {
     setUser(userData);
-    console.log(userData);
     
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', userData.token);
@@ -53,11 +52,9 @@ export const UserProvider = ({ children }) => {
 
     try {
       const userDoc = doc(db, 'users', id);
-      console.log(userDoc);
       await updateDoc(userDoc, userDoc.balanceAnual = updatedUser );
       Swal.fire("Cambios guardados")
     } catch (error) {
-      console.error('Error updating data: ', error);
       Swal.fire('Error', 'Error al actualizar los datos en Firebase', 'error');
     }
   };
@@ -74,11 +71,7 @@ export const UserProvider = ({ children }) => {
     updateData(newData);
   };
 
- /*  const updateExpense = (categoryIndex, monthIndex, amount) => {
-    const newData = [...user.balanceAnual[0].data];
-    newData[categoryIndex].expenses[monthIndex].amount = amount;
-    updateData(newData);
-  }; */
+
 
   const updateExpense = (newData) => {
     updateData(newData);

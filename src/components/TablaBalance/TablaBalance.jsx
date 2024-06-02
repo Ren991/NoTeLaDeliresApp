@@ -190,8 +190,8 @@ const TablaBalance = () => {
         <TableToPdf data={data} months={months} monthlyBalance={balanceMensual} monthlyExpenses={totalGastos}/>
       </div>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <TableContainer component={Paper} >
+        <Table sx={{ minWidth: 700 }}  aria-label="customized table">
           <TableHead style={{ background: "#628979" }}>
             <TableRow>
               <TableCell style={{ color: "white" }}>
@@ -209,12 +209,12 @@ const TablaBalance = () => {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody  >
             {data.map((item, index) => (
               <TableRow key={index}>
                 {item.category && (
                   <>
-                    <TableCell style={{ background: "#628979" }}>
+                    <TableCell style={{ background: "#628979",position: 'sticky', left: 0, zIndex: 1  }} >
                       <IconButton
                         aria-label="delete"
                         color="error"
@@ -232,11 +232,11 @@ const TablaBalance = () => {
                         <EditIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell style={{ background: "#628979", color: "white" }}>
+                    <TableCell style={{ background: "#628979", color: "white",  position: 'sticky', left: 0, zIndex: 1 }}>
                       {item.category}
                     </TableCell>
                     {item.expenses.map((expense, expenseIndex) => (
-                      <TableCell key={expenseIndex}>
+                      <TableCell key={expenseIndex} >
                         <input
                           disabled={editingMonth !== expenseIndex}
                           value={expense.amount}
@@ -253,18 +253,18 @@ const TablaBalance = () => {
               </TableRow>
             ))}
             <TableRow>
-              <TableCell style={{ background: "black", color: "white" }}></TableCell>
-              <TableCell style={{ background: "black", color: "white" }}>
+              <TableCell style={{ background: "black", color: "white"  }}></TableCell>
+              <TableCell style={{ background: "black", color: "white"  }}>
                 Gastos Mensuales
               </TableCell>
               {totalGastos.map((gastos, index) => (
-                <TableCell key={index} style={{ borderRadius: "0.5rem" }}>
+                <TableCell key={index} style={{ borderRadius: "0.5rem"  }}>
                   {gastos}
                 </TableCell>
               ))}
             </TableRow>
             <TableRow>
-              <TableCell style={{ background: "black", color: "white" }}></TableCell>
+              <TableCell style={{ background: "black", color: "white"  }}></TableCell>
               <TableCell style={{ fontSize: "15px", background: "black", color: "white" }}>
                 BALANCE MENSUAL
               </TableCell>
