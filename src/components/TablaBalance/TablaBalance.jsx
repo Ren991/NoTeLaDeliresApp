@@ -181,7 +181,7 @@ const TablaBalance = () => {
   };
 
   return (
-    <div style={{ marginTop: "100px", width: "70%", marginLeft: "auto", marginRight: "auto" }}>
+    <div style={{ marginTop: "100px", marginBottom:"20px",  width: "70%", marginLeft: "auto", marginRight: "auto" }}>
       <div style={{ display: "flex", justifyContent: "space-around", alignItems:"center"}}>
         <h3 style={{color:"black",fontSize:"20px"}}>Balance anual 2024</h3>
         <Button variant="text" style={{color:"black",fontSize:"20px"}} onClick={openAnualCharts}>
@@ -254,7 +254,7 @@ const TablaBalance = () => {
             ))}
             <TableRow>
               <TableCell style={{ background: "black", color: "white"  }}></TableCell>
-              <TableCell style={{ background: "black", color: "white"  }}>
+              <TableCell style={{ background: "black", color: "white"  ,position: 'sticky', left: 0, zIndex: 1 }}>
                 Gastos Mensuales
               </TableCell>
               {totalGastos.map((gastos, index) => (
@@ -265,7 +265,7 @@ const TablaBalance = () => {
             </TableRow>
             <TableRow>
               <TableCell style={{ background: "black", color: "white"  }}></TableCell>
-              <TableCell style={{ fontSize: "15px", background: "black", color: "white" }}>
+              <TableCell style={{ fontSize: "15px", background: "black", color: "white",position: 'sticky', left: 0, zIndex: 1  }}>
                 BALANCE MENSUAL
               </TableCell>
               {balanceMensual.map((balance, index) => (
