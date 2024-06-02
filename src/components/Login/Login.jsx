@@ -66,10 +66,11 @@ export default function Login() {
         const token = await user.getIdToken();
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', token);
+        localStorage.setItem('id', user.uid); 
   
         // Verificar si balanceAnual existe y no está vacío
         const balanceAnual = userData.balance && userData.balance.length > 0 ? userData.balance : [];
-        const dataUser = { email, token: token, balanceAnual: balanceAnual };
+        const dataUser = { email, token: token, balanceAnual: balanceAnual, id: user.uid };
   
         signIn(dataUser);
         NavHome();

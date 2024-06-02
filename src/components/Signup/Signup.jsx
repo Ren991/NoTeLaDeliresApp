@@ -46,7 +46,7 @@ export default function SignUp() {
           nombre:data.get("firstName"),
           apellido:data.get("lastName"),
           email:data.get("email"),         
-          balance: [
+          balanceAnual: [
             {
               "data": [
                 {

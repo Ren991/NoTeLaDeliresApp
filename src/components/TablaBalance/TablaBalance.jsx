@@ -11,7 +11,7 @@ import TableToPdf from "./TableToPdf";
 import { useUser } from "../../Context/UserContext";
 
 const TablaBalance = () => {
-  const { user } = useUser();
+  const { user ,editCategory, deleteCategory, updateExpense, addCategory } = useUser();
   const [data, setData] = useState([]);
   const [balanceMensual, setBalanceMensual] = useState([]);
   const [isAnualModalOpen, setIsAnualModalOpen] = useState(false);
@@ -22,18 +22,18 @@ const TablaBalance = () => {
   const navigate = useNavigate();
 
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  
   useEffect(() => {
     if (user && user.balanceAnual && user.balanceAnual.length > 0) {
       setData(user.balanceAnual[0].data);
-    }else{
+    } else {
       Swal.fire({
         title: 'Error!',
         text: 'Error al recuperar los datos. Vuelva a intentarlo nuevamente',
         icon: 'error',
         confirmButtonText: 'Salir'
-      })
-      
-      navigate("/")
+      });
+      navigate("/");
     }
   }, [user]);
 
@@ -66,7 +66,6 @@ const TablaBalance = () => {
   };
 
   const handleEditCategory = (index) => {
-    const newData = [...data];
     Swal.fire({
       title: "Ingrese el nuevo nombre de la categoría",
       input: "text",
@@ -76,8 +75,7 @@ const TablaBalance = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const newCategory = result.value;
-        newData[index].category = newCategory;
-        setData(newData);
+        editCategory(index, newCategory);
       }
     });
   };
@@ -94,38 +92,19 @@ const TablaBalance = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        const newData = [...data];
-        newData.splice(index, 1);
-        setData(newData);
+        deleteCategory(index);
         Swal.fire("Eliminado", "La categoría ha sido eliminada correctamente", "success");
       }
     });
   };
 
-  const openAnualCharts = () => {
-    setIsAnualModalOpen(true);
-  };
-
-  const closeAnualCharts = () => {
-    setIsAnualModalOpen(false);
-  };
-
   const editarMes = (index) => () => {
-    if (editingMonth === index) {
-      setEditingMonth(null);
-    } else {
-      setEditingMonth(index);
-    }
+    setEditingMonth(editingMonth === index ? null : index);
   };
 
   const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
     const parsedValue = parseFloat(newValue);
-    const newData = [...data];
-
-    newData[categoryIndex].expenses[monthIndex].amount = isNaN(parsedValue) ? 0 : parsedValue;
-    setData(newData);
-
-    updateMonthlyData();
+    updateExpense(categoryIndex, monthIndex, isNaN(parsedValue) ? 0 : parsedValue);
   };
 
   const handleAddCategory = () => {
@@ -138,17 +117,22 @@ const TablaBalance = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const newCategory = result.value;
-        const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
-        const ingresosIndex = data.findIndex(item => item.category === "INGRESOS");
-        const newData = [...data.slice(0, ingresosIndex), { category: newCategory, expenses: newCategoryExpenses }, ...data.slice(ingresosIndex)];
-        setData(newData);
+        addCategory(newCategory);
       }
     });
   };
 
+  const openAnualCharts = () => {
+    setIsAnualModalOpen(true);
+  };
+
+  const closeAnualCharts = () => {
+    setIsAnualModalOpen(false);
+  };
+
   const openMonthlyModal = (month) => {
-    setSelectedMonth(month); // Guardar el mes seleccionado
-    setIsMonthlyModalOpen(true); // Abrir el modal mensual
+    setSelectedMonth(month);
+    setIsMonthlyModalOpen(true);
   };
 
   const closeMonthlyModal = () => {

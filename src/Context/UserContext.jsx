@@ -1,4 +1,8 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import {db} from "../components/Services/Service";
+import { doc, updateDoc } from 'firebase/firestore';
+import Swal from 'sweetalert2';
+
 
 
 // Crear el contexto
@@ -18,6 +22,7 @@ export const UserProvider = ({ children }) => {
     if (storedUser && token) {
       setUser(JSON.parse(storedUser));
     }
+    
   }, []);
 
   const signIn = (userData) => {
@@ -25,6 +30,7 @@ export const UserProvider = ({ children }) => {
     
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', userData.token);
+    localStorage.setItem('id',userData.id);
 
   };
 
@@ -32,10 +38,54 @@ export const UserProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('id');
+  };
+
+
+  const updateData = async (newData) => {
+    const id = localStorage.getItem('id');
+    const updatedUser = { ...user, balanceAnual: [{ ...user.balanceAnual[0], data: newData }] };
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+
+    //const userId = user.uid;
+
+    try {
+      const userDoc = doc(db, 'users', id);
+      console.log(userDoc);
+      await updateDoc(userDoc, userDoc.balanceAnual = updatedUser );
+    } catch (error) {
+      console.error('Error updating data: ', error);
+      Swal.fire('Error', 'Error al actualizar los datos en Firebase', 'error');
+    }
+  };
+
+  const editCategory = (index, newCategory) => {
+    const newData = [...user.balanceAnual[0].data];
+    newData[index].category = newCategory;
+    updateData(newData);
+  };
+
+  const deleteCategory = (index) => {
+    const newData = [...user.balanceAnual[0].data];
+    newData.splice(index, 1);
+    updateData(newData);
+  };
+
+  const updateExpense = (categoryIndex, monthIndex, amount) => {
+    const newData = [...user.balanceAnual[0].data];
+    newData[categoryIndex].expenses[monthIndex].amount = amount;
+    updateData(newData);
+  };
+
+  const addCategory = (newCategory) => {
+    const newCategoryExpenses = months.map(month => ({ month, "amount": 0 }));
+    const newData = [...user.balanceAnual[0].data, { category: newCategory, expenses: newCategoryExpenses }];
+    updateData(newData);
   };
 
   return (
-    <UserContext.Provider value={{ user, signIn, signOut }}>
+    <UserContext.Provider value={{ user, signIn, signOut, editCategory, deleteCategory, updateExpense, addCategory }}>
       {children}
     </UserContext.Provider>
   );
