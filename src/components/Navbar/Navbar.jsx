@@ -100,7 +100,7 @@ function Navbar() {
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems
                 .filter(item => item !== "Salir" || isAuthenticated)
-                .filter(item => item !== "Balance Anual" || isAuthenticated)
+                .filter(item => item !== "Balance Mensual" || isAuthenticated)
                 .map((item) => (
                   <Button key={item} sx={{ color: '#fff' }} onClick={() => handleNavItemClick(item)}>
                     {item}

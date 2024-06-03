@@ -13,6 +13,7 @@ const HomePage = (onLogout) => {
 
     const navigate = useNavigate();
     const { user } = useUser();
+
    
  
     return (
@@ -29,7 +30,11 @@ const HomePage = (onLogout) => {
                 <Typography variant="body1" paragraph>
                     Nuestra aplicación te ayuda a administrar tus ingresos y gastos de manera eficiente.
                 </Typography>
-                <Button onClick={()=>navigate("/login")} variant='outlined' style={{fontFamily:"courier", fontSize:"25px", marginTop:"25px"}}>Iniciar sesión</Button>
+                {
+                    user ?                 <Button onClick={()=>navigate("/tabla_user")} variant='outlined' style={{fontFamily:"courier", fontSize:"25px", marginTop:"25px"}}>Balance Mensual</Button>
+                    :                 <Button onClick={()=>navigate("/login")} variant='outlined' style={{fontFamily:"courier", fontSize:"25px", marginTop:"25px"}}>Iniciar sesión</Button>
+
+                }
                 
             </Container>
             <Footer />
