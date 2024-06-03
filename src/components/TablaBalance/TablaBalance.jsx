@@ -137,6 +137,7 @@ const TablaBalance = () => {
     
     if(pendingChanges.length >0 ) {
       updateExpense(data);
+      
 
     }else{
       Swal.fire("No hay cambios pendientes");
@@ -146,6 +147,7 @@ const TablaBalance = () => {
     setIsSaving(true);
     setPendingChanges([]); 
     setIsSaving(false);
+    setEditingMonth(null);
   };
 
   const handleAddCategory = () => {
@@ -186,6 +188,9 @@ const TablaBalance = () => {
         <h3 style={{fontSize:"20px"}}>Balance anual 2024</h3>
         <Button variant="text" style={{fontSize:"20px", color:"white"}} onClick={openAnualCharts}>
           Mostrar Gráficos
+        </Button>
+        <Button variant="text" style={{fontSize:"20px", color:"white"}} onClick={()=> navigate("/instructivo")}>
+          Instructivo
         </Button>
         <TableToPdf data={data} months={months} monthlyBalance={balanceMensual} monthlyExpenses={totalGastos}/>
       </div>

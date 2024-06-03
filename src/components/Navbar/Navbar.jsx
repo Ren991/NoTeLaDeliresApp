@@ -22,7 +22,7 @@ import { useUser } from '../../Context/UserContext';
 
 
 const drawerWidth = 240;
-const navItems = ["Salir","Instructivo"];
+const navItems = ["Salir", "Balance Mensual"];
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -68,26 +68,10 @@ function Navbar() {
       
       signOut();
       navigate('/');
-    } else if (item === "Instructivo") {
-      navigate('/instructivo');  // Navegar a la ruta de instructivo
+    } else if (item === "Balance Mensual") {
+      navigate('/tabla_user');  // Navegar a la ruta de instructivo
     }
   };
-
-  const handleLogout = async () => {
-
-    const auth = getAuth();
-    try {
-      await signOut(auth);
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      setIsAuthenticated(false);
-      
-      navigate('/'); // Redirigir a la página de inicio de sesión
-    } catch (error) {
-      console.error("Error cerrando sesión:", error);
-    }
-  };
-
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -116,6 +100,7 @@ function Navbar() {
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems
                 .filter(item => item !== "Salir" || isAuthenticated)
+                .filter(item => item !== "Balance Anual" || isAuthenticated)
                 .map((item) => (
                   <Button key={item} sx={{ color: '#fff' }} onClick={() => handleNavItemClick(item)}>
                     {item}
