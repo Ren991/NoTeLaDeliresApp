@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -35,6 +35,9 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { signIn } = useUser();
   const {user} = useUser();
+
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
 
   useEffect(() => {
@@ -77,13 +80,14 @@ export default function Login() {
         setLoading(false); // Ocultar Backdrop
       } else {
         setLoading(false); // Ocultar Backdrop
-  
+        clearFields();
         Swal.fire({
           title: 'Error!',
           text: 'Credenciales Inválidas',
           icon: 'error',
           confirmButtonText: 'Salir'
         });
+        
       }
     } catch (err) {
       setLoading(false); // Ocultar Backdrop
@@ -94,6 +98,12 @@ export default function Login() {
         icon: 'error',
         confirmButtonText: 'Salir'
       });
+    }
+  };
+  const clearFields = () => {
+    if (emailRef.current && passwordRef.current) {
+      emailRef.current.value = "";
+      passwordRef.current.value = "";
     }
   };
 
@@ -143,6 +153,7 @@ export default function Login() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                inputRef={emailRef}
               />
               <TextField
                 margin="normal"
@@ -153,6 +164,8 @@ export default function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                inputRef={passwordRef}
+
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}

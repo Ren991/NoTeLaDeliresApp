@@ -23,18 +23,18 @@ const Footer = () => {
           <Grid item xs={12} sm={6}>
             <Typography variant="body1">Enlaces útiles:</Typography>
             <Typography variant="body1">
-              <Link color="inherit" href="#" style={{textDecoration:"none"}}>
+              <Link target="_blank" color="inherit" href="https://www.linkedin.com/in/renzo-beccari/" style={{textDecoration:"none"}}>
                 <LinkedInIcon/> Linkedin
                 
               </Link>
             </Typography>
             <Typography variant="body1">
-              <Link color="inherit" href="#" style={{textDecoration:"none"}}>
+              <Link  target="_blank" color="inherit" href="https://github.com/Ren991"  style={{textDecoration:"none"}}>
                 <GitHubIcon/> Github
               </Link>
             </Typography>
             <Typography variant="body1">
-              <Link color="inherit" href="#" style={{textDecoration:"none"}}>
+              <Link target="_blank" color="inherit" href="mailto:beccrenzo@gmail.com" style={{textDecoration:"none"}}>
                 <MailOutlineIcon/> Mail
               </Link>
             </Typography>
