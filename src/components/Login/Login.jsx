@@ -91,6 +91,7 @@ export default function Login() {
       }
     } catch (err) {
       setLoading(false); // Ocultar Backdrop
+      clearFields();
   
       Swal.fire({
         title: 'Error!',
@@ -101,7 +102,9 @@ export default function Login() {
     }
   };
   const clearFields = () => {
+    
     if (emailRef.current && passwordRef.current) {
+      
       emailRef.current.value = "";
       passwordRef.current.value = "";
     }

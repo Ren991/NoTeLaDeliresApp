@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -23,11 +23,19 @@ import { useUser } from '../../Context/UserContext';
 
 const defaultTheme = createTheme();
 
+
+
+
+
 export default function SignUp() {
 
 
   const navigate = useNavigate();
   const { user } = useUser();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
 
   const auth = getAuth();
   const handleSubmit = async (event) => {
@@ -38,6 +46,9 @@ export default function SignUp() {
     const firstName = data.get("firstName");
     const lastName = data.get("lastName");
     const password = data.get("password");
+
+  
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -177,13 +188,13 @@ export default function SignUp() {
       
       navigate(("/login"));
   } catch (error) {
-      console.error('Error signing up:', error);
       Swal.fire({
           title: 'Error!',
           text: 'Error al registrarse, intentente nuevamente.',
           icon: 'error',
           confirmButtonText: 'Salir'
         })
+        clearFields()
   }
   };
 
@@ -192,6 +203,18 @@ export default function SignUp() {
      navigate("/tabla_user")
     }
   }, [user]);
+
+
+  const clearFields = () => {
+    
+    if (emailRef.current && passwordRef.current && firstNameRef.current && lastNameRef.current) {
+      
+      emailRef.current.value = "";
+      passwordRef.current.value = "";
+      firstNameRef.current.value= "";
+      lastNameRef.current.value ="";
+    }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -207,7 +230,7 @@ export default function SignUp() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="Nombre" autoFocus/>
+                <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="Nombre" autoFocus  inputRef={firstNameRef}/>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -217,6 +240,7 @@ export default function SignUp() {
                   label="Apellido"
                   name="lastName"
                   autoComplete="family-name"
+                  inputRef={lastNameRef}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -227,6 +251,7 @@ export default function SignUp() {
                   label="Email"
                   name="email"
                   autoComplete="email"
+                  inputRef={emailRef}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -238,6 +263,7 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  inputRef={passwordRef}
                 />
               </Grid>
               
