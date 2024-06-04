@@ -141,9 +141,7 @@ const TablaBalance = () => {
 
     }else{
       Swal.fire("No hay cambios pendientes");
-    }
-   
-    
+    }     
     setIsSaving(true);
     setPendingChanges([]); 
     setIsSaving(false);
@@ -295,5 +293,4 @@ const TablaBalance = () => {
     </div>
   );
 };
-
 export default TablaBalance;
