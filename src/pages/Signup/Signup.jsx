@@ -1,10 +1,8 @@
-import { useState,useEffect } from 'react';
+import { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -16,10 +14,8 @@ import { useNavigate  } from "react-router-dom";
 import { getAuth,createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2'
-import { db } from '../Services/Service';
+import { db } from '../../components/Services/Service';
 import { useUser } from '../../Context/UserContext';
-
-
 
 const defaultTheme = createTheme();
 
@@ -28,12 +24,10 @@ export default function SignUp() {
 
   const navigate = useNavigate();
   const { user } = useUser();
-
   const auth = getAuth();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
- 
+    const data = new FormData(event.currentTarget); 
     const email = data.get("email");
     const firstName = data.get("firstName");
     const lastName = data.get("lastName");
@@ -172,9 +166,7 @@ export default function SignUp() {
               ]
             }
           ] //para guardar los balances.
-      });
-
-      
+      });      
       navigate(("/login"));
   } catch (error) {
       console.error('Error signing up:', error);

@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes,Navigate, useNavigate } from "react-router-dom";
-import Login from './components/Login/Login'
-import SignUp from './components/Signup/Signup';
-import Home from './components/Home/Home';
+import Login from "./pages/Login/Login";
+import SignUp from "./pages/Signup/Signup";
+import Home from "./pages/Home/Home";
 import AnualChartsBalance from './components/TablaBalance/AnualChartsBalance';
-import HomePage from "./components/HomePage/HomePage";
+import HomePage from "./pages/HomePage/HomePage";
 import Instructivo from "./components/Instructivo/Instructivo";
 import { useState,useEffect } from "react";
 import { useUser } from './Context/UserContext';

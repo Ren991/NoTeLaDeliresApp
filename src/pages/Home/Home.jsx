@@ -1,7 +1,7 @@
 import React from "react"
-import Navbar from "../Navbar/Navbar"
-import TablaBalance from "../TablaBalance/TablaBalance"
-import Footer from "../Footer/Footer"
+import Navbar from "../../components/Navbar/Navbar"
+import Footer from "../../components/Footer/Footer"
+import TablaBalance from "../../components/TablaBalance/TablaBalance"
 
 
 function Home() {

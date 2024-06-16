@@ -1,5 +1,5 @@
-import Navbar from '../Navbar/Navbar'; 
-import Footer from '../Footer/Footer'; 
+import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 import { Typography, Container, Button } from '@mui/material';
 import { useNavigate  } from "react-router-dom";
 import { useEffect } from 'react';

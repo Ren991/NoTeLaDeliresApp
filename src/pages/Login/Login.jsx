@@ -11,16 +11,16 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from '@mui/material/Backdrop';
-
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate  } from "react-router-dom";
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import {auth,db} from "../Services/Service";
+import { auth,db } from '../../components/Services/Service';
 import { doc, getDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { useUser } from '../../Context/UserContext';
+
 
 
 
@@ -53,14 +53,12 @@ export default function Login() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
-    const password = data.get("password");
-  
+    const password = data.get("password");  
     setLoading(true); // Mostrar Backdrop
   
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-  
+      const user = userCredential.user;  
       const userDocRef = doc(db, 'users', user.uid);
       const userDoc = await getDoc(userDocRef);
   
@@ -69,8 +67,7 @@ export default function Login() {
         const token = await user.getIdToken();
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', token);
-        localStorage.setItem('id', user.uid); 
-  
+        localStorage.setItem('id', user.uid);   
         // Verificar si balanceAnual existe y no está vacío
         const balanceAnual = userData.balanceAnual && userData.balanceAnual.length > 0 ? userData.balanceAnual : [];
         const dataUser = { email, token: token, balanceAnual: balanceAnual, id: user.uid };
