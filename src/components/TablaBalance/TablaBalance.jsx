@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import TableToPdf from "./TableToPdf";
 import { useUser } from "../../Context/UserContext";
 
+
 const TablaBalance = () => {
   const { user, editCategory, deleteCategory, updateExpense, addCategory } = useUser();
   const [data, setData] = useState([]);

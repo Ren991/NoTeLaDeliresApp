@@ -16,6 +16,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2'
 import { db } from '../../components/Services/Service';
 import { useUser } from '../../Context/UserContext';
+import defaultBalance from '../../components/TablaBalance/DefaultBalance'; // Es un array con los valores por defecto del balance anual.
 
 const defaultTheme = createTheme();
 
@@ -40,148 +41,26 @@ export default function SignUp() {
     const password = data.get("password");
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(userCredential);
       const user = userCredential.user;
       const userDocRef = doc(db, 'users', user.uid);
+      console.log(userDocRef);
       await setDoc(userDocRef, {
           nombre:data.get("firstName"),
           apellido:data.get("lastName"),
           email:data.get("email"),         
-          balanceAnual: [
-            {
-              "data": [
-                {
-                  "category": "Alquiler",
-                  "expenses": [
-                    { "month": "Enero", "amount": 0 },
-                    { "month": "Febrero", "amount": 0 },
-                    { "month": "Marzo", "amount": 0 },
-                    { "month": "Abril", "amount": 0 },
-                    { "month": "Mayo", "amount": 0 },
-                    { "month": "Junio", "amount": 0 },
-                    { "month": "Julio", "amount": 0 },
-                    { "month": "Agosto", "amount": 0 },
-                    { "month": "Septiembre", "amount": 0 },
-                    { "month": "Octubre", "amount": 0 },
-                    { "month": "Noviembre", "amount": 0 },
-                    { "month": "Diciembre", "amount": 0 }
-                  ]
-                },
-                {
-                  "category": "Salidas",
-                  "expenses": [
-                    { "month": "Enero", "amount": 0 },
-                    { "month": "Febrero", "amount": 0 },
-                    { "month": "Marzo", "amount": 0 },
-                    { "month": "Abril", "amount": 0 },
-                    { "month": "Mayo", "amount": 0 },
-                    { "month": "Junio", "amount": 0 },
-                    { "month": "Julio", "amount": 0 },
-                    { "month": "Agosto", "amount": 0 },
-                    { "month": "Septiembre", "amount": 0 },
-                    { "month": "Octubre", "amount": 0 },
-                    { "month": "Noviembre", "amount": 0 },
-                    { "month": "Diciembre", "amount": 0 }
-                  ]
-                },
-                {
-                  "category": "Comida",
-                  "expenses": [
-                    { "month": "Enero", "amount": 0 },
-                    { "month": "Febrero", "amount": 0 },
-                    { "month": "Marzo", "amount": 0 },
-                    { "month": "Abril", "amount": 0 },
-                    { "month": "Mayo", "amount": 0 },
-                    { "month": "Junio", "amount": 0 },
-                    { "month": "Julio", "amount": 0 },
-                    { "month": "Agosto", "amount": 0 },
-                    { "month": "Septiembre", "amount": 0 },
-                    { "month": "Octubre", "amount": 0 },
-                    { "month": "Noviembre", "amount": 0 },
-                    { "month": "Diciembre", "amount": 0 }
-                  ]
-                },
-                {
-                  "category": "Servicios",
-                  "expenses": [
-                    { "month": "Enero", "amount": 0 },
-                    { "month": "Febrero", "amount": 0 },
-                    { "month": "Marzo", "amount": 0 },
-                    { "month": "Abril", "amount": 0 },
-                    { "month": "Mayo", "amount": 0 },
-                    { "month": "Junio", "amount": 0 },
-                    { "month": "Julio", "amount": 0 },
-                    { "month": "Agosto", "amount": 0 },
-                    { "month": "Septiembre", "amount": 0 },
-                    { "month": "Octubre", "amount": 0 },
-                    { "month": "Noviembre", "amount": 0 },
-                    { "month": "Diciembre", "amount": 0 }
-                  ]
-                },
-                {
-                  "category": "Tarjeta de crédito",
-                  "expenses": [
-                    { "month": "Enero", "amount": 0 },
-                    { "month": "Febrero", "amount": 0 },
-                    { "month": "Marzo", "amount": 0 },
-                    { "month": "Abril", "amount": 0 },
-                    { "month": "Mayo", "amount": 0 },
-                    { "month": "Junio", "amount": 0 },
-                    { "month": "Julio", "amount": 0 },
-                    { "month": "Agosto", "amount": 0 },
-                    { "month": "Septiembre", "amount": 0 },
-                    { "month": "Octubre", "amount": 0 },
-                    { "month": "Noviembre", "amount": 0 },
-                    { "month": "Diciembre", "amount": 0 }
-                  ]
-                },
-                {
-                  "category": "Inversiones",
-                  "expenses": [
-                    { "month": "Enero", "amount": 0 },
-                    { "month": "Febrero", "amount": 0 },
-                    { "month": "Marzo", "amount": 0 },
-                    { "month": "Abril", "amount": 0 },
-                    { "month": "Mayo", "amount": 0 },
-                    { "month": "Junio", "amount": 0 },
-                    { "month": "Julio", "amount": 0 },
-                    { "month": "Agosto", "amount": 0 },
-                    { "month": "Septiembre", "amount": 0 },
-                    { "month": "Octubre", "amount": 0 },
-                    { "month": "Noviembre", "amount": 0 },
-                    { "month": "Diciembre", "amount": 0 }
-                  ]
-                },
-                {
-                  "category": "INGRESOS",
-                  "expenses": [
-                    { "month": "Enero", "amount": 0 },
-                    { "month": "Febrero", "amount": 0 },
-                    { "month": "Marzo", "amount": 0 },
-                    { "month": "Abril", "amount": 0 },
-                    { "month": "Mayo", "amount": 0 },
-                    { "month": "Junio", "amount": 0 },
-                    { "month": "Julio", "amount": 0 },
-                    { "month": "Agosto", "amount": 0 },
-                    { "month": "Septiembre", "amount": 0 },
-                    { "month": "Octubre", "amount": 0 },
-                    { "month": "Noviembre", "amount": 0 },
-                    { "month": "Diciembre", "amount": 0 }
-                  ]
-                }
-          
-              ]
-            }
-          ] //para guardar los balances.
+          balanceAnual: defaultBalance
       });      
       navigate(("/login"));
   } catch (error) {
-      clearFields();
+      console.log(error);
       Swal.fire({
           title: 'Error!',
           text: 'Error al registrarse, intentente nuevamente.',
           icon: 'error',
           confirmButtonText: 'Salir'
         })
+        clearFields();
   }
   };
 
