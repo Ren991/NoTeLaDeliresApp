@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,6 +25,12 @@ export default function SignUp() {
   const navigate = useNavigate();
   const { user } = useUser();
   const auth = getAuth();
+
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget); 
@@ -169,7 +175,7 @@ export default function SignUp() {
       });      
       navigate(("/login"));
   } catch (error) {
-      console.error('Error signing up:', error);
+      clearFields();
       Swal.fire({
           title: 'Error!',
           text: 'Error al registrarse, intentente nuevamente.',
@@ -185,6 +191,15 @@ export default function SignUp() {
     }
   }, [user]);
 
+  const clearFields = () => {
+    if (emailRef.current && passwordRef.current) {
+      emailRef.current.value = "";
+      passwordRef.current.value = "";
+      firstNameRef.current.value = "";
+      lastNameRef.current.value = "";
+    }
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -199,7 +214,7 @@ export default function SignUp() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="Nombre" autoFocus/>
+                <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="Nombre" autoFocus  inputRef={firstNameRef}/>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -209,6 +224,7 @@ export default function SignUp() {
                   label="Apellido"
                   name="lastName"
                   autoComplete="family-name"
+                  inputRef={lastNameRef}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -219,6 +235,7 @@ export default function SignUp() {
                   label="Email"
                   name="email"
                   autoComplete="email"
+                  inputRef={emailRef}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -230,6 +247,7 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  inputRef={passwordRef}
                 />
               </Grid>
               
