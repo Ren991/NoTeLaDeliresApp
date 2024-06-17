@@ -41,8 +41,8 @@ const MensualChartsBalance = ({ data, month }) => {
             {/* Gráfico de Líneas */}
             <h2>Gráfico de Líneas</h2>
             <LineChart
-                width={500}
-                height={300}
+                width={800}
+                height={200}
                 series={lineChartData}
                 xAxis={[{ scaleType: 'point', data: xAxisCategories }]}
                 sx={{

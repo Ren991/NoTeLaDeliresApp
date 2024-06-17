@@ -49,7 +49,7 @@ const AnualChartsBalance = ({ data, gastosMensuales }) => {
                     <h2>Gráfico de gastos por mes</h2>
                     <LineChart
                         width={600}
-                        height={300}
+                        height={200}
                         series={[{ data: gastosMensuales, label: 'Gastos Totales por mes', area: true, showMark: false }]} // Aquí cambiamos de ingresosMensuales a gastosMensuales
                         xAxis={[{ scaleType: 'point', data: xLabels }]}
                         sx={{
