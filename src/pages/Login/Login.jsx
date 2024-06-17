@@ -88,6 +88,7 @@ export default function Login() {
       }
     } catch (err) {
       setLoading(false); // Ocultar Backdrop
+      clearFields();
   
       Swal.fire({
         title: 'Error!',
