@@ -14,7 +14,7 @@ const Footer = () => {
         <Grid container spacing={3} justifyContent="space-between">
           <Grid item xs={12} sm={6}>
             <Typography variant="body1">
-              ¡Gracias por visitar nuestra aplicación!
+              ¡Gracias por visitar la aplicación!
             </Typography>
             <Typography variant="body1">
               No Te La Delires App. Todos los derechos reservados.

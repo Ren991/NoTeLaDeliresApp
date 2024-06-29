@@ -41,10 +41,8 @@ export default function SignUp() {
     const password = data.get("password");
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
       const user = userCredential.user;
       const userDocRef = doc(db, 'users', user.uid);
-      console.log(userDocRef);
       await setDoc(userDocRef, {
           nombre:data.get("firstName"),
           apellido:data.get("lastName"),
@@ -53,7 +51,6 @@ export default function SignUp() {
       });      
       navigate(("/login"));
   } catch (error) {
-      console.log(error);
       Swal.fire({
           title: 'Error!',
           text: 'Error al registrarse, intentente nuevamente.',

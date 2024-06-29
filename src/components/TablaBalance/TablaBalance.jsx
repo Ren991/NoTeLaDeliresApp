@@ -30,9 +30,7 @@ const TablaBalance = () => {
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   useEffect(() => {
-    console.log(user)
     if (user !== null) {
-      console.log(user)
       // Verificar y establecer los datos
       if (user.balanceAnual && user.balanceAnual.length > 0) {
         setData(user.balanceAnual[0].data);
@@ -183,18 +181,18 @@ const TablaBalance = () => {
   return (
     <div style={{ marginTop: "70px", marginBottom: "20px", color: "white", width: "70%", marginLeft: "auto", marginRight: "auto" }}>
       <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
-        <h3 style={{ fontSize: "20px" }}>Balance anual 2024</h3>
-        <Button variant="text" style={{ fontSize: "20px", color: "white" }} onClick={openAnualCharts}>
+        <h3 style={{ fontSize: "17px" }}>Balance anual 2024</h3>
+        <Button variant="text" style={{ fontSize: "15px", color: "white" }} onClick={openAnualCharts}>
           Mostrar Gráficos
         </Button>
-        <Button variant="text" style={{ fontSize: "20px", color: "white" }} onClick={() => navigate("/instructivo")}>
+        <Button variant="text" style={{ fontSize: "15px", color: "white" }} onClick={() => navigate("/instructivo")}>
           Instructivo
         </Button>
         <TableToPdf data={data} months={months} monthlyBalance={balanceMensual} monthlyExpenses={totalGastos} />
       </div>
 
-      <TableContainer component={Paper} >
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <TableContainer component={Paper} style={{ height:"590px" , width:"90%" , marginLeft:"auto", marginRight:"auto"}}>
+        <Table sx={{ minWidth: 900}} aria-label="customized table">
           <TableHead style={{ background: "#628979" }}>
             <TableRow>
               <TableCell style={{ color: "white" }}>
@@ -291,7 +289,7 @@ const TablaBalance = () => {
           sx={{  position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: { xs: "90%", sm: "80%", md: "70%", lg: "60%" }, maxWidth: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4, overflowY: "auto", maxHeight: "90vh",
           }}
         >
-          <h2>{selectedMonth}</h2>
+          <h2 style={{marginBottom:"10px",textDecoration:"underline"}}>{selectedMonth}</h2>
           <MensualChartsBalance month={selectedMonth} data={data} />
         </Box>
       </Modal>

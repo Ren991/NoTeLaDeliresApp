@@ -7,7 +7,7 @@ const TableToExcel = ({ data, months, monthlyBalance, monthlyExpenses }) => {
   const balancesMensuales= monthlyBalance.map(item => item.balance);
   const generateExcel = () => {
     const excelData = prepareExcelData(data, months, monthlyBalance, monthlyExpenses);
-    exportToExcel(excelData, 'Balance.xlsx');
+    exportToExcel(excelData, 'BalanceAnual.xlsx');
   };
 
   const prepareExcelData = (data, months, monthlyBalance, monthlyExpenses) => {
@@ -40,7 +40,7 @@ const TableToExcel = ({ data, months, monthlyBalance, monthlyExpenses }) => {
   return (
     <div>
       
-      <Button variant="text" style={{fontSize:"20px",color:"white"}} onClick={generateExcel}>Exportar a Excel</Button>
+      <Button variant="text" style={{fontSize:"17px",color:"white"}} onClick={generateExcel}>Exportar a Excel</Button>
     </div>
   );
 };

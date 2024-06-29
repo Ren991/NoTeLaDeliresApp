@@ -5,8 +5,6 @@ import { LineChart } from '@mui/x-charts/LineChart';
 const MensualChartsBalance = ({ data, month }) => {
     const [datosMensuales, setDatosMensuales] = useState([]);
 
-    console.log("hola");
-
     
 
     const gastosMensuales = data

@@ -4,6 +4,7 @@ import SignUp from "./pages/Signup/Signup";
 import Home from "./pages/Home/Home"
 import HomePage from "./pages/HomePage/HomePage"
 import Instructivo from "./components/Instructivo/Instructivo";
+import NotFound from "./pages/NotFound/NotFound";
 import { UserProvider,useUser } from "./Context/UserContext";
 import { useEffect,useState } from "react";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
@@ -11,34 +12,13 @@ import Protected from "./components/Protected/Protected";
 
 
 function App() {
-  const { user} = useUser();
   
-
-
-    {/* <UserProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={ <Login />} />
-          <Route path="/registrarse" element={<SignUp />} />
-          <Route
-            path="/tabla_user"
-            element={ <Home /> }
-          />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/instructivo" element={<Instructivo />} />
-          
-        </Routes>
-      </BrowserRouter>
-    </UserProvider> */}
     const router = createBrowserRouter([
       {
         path: '/',
-        element: (
-          
+        element: (     
             
-              <HomePage />
-            
-          
+              <HomePage />          
         ),
       },
       {
@@ -51,8 +31,7 @@ function App() {
       },
       {
         path: '/login',
-        element: (
-          
+        element: (       
             
           <Login />
           
@@ -60,21 +39,22 @@ function App() {
       },
       {
         path: '/registrarse',
-        element: (
-          
-              <SignUp />
-          
+        element: (          
+              <SignUp />         
         ),
       },
       {
         path: '/instructivo',
-        element: (
-          
-              <Instructivo />
-          
+        element: (          
+              <Instructivo />          
         ),
-      },
-      
+      },     
+      {
+        path: '*',
+        element: (          
+              <NotFound />          
+        ),
+      },     
   
     ])
   
