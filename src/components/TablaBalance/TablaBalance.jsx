@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button, Modal, Box } from "@mui/material";
-import { Link , useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -11,8 +11,9 @@ import Swal from "sweetalert2";
 import TableToPdf from "./TableToPdf";
 import { useUser } from "../../Context/UserContext";
 
+
 const TablaBalance = () => {
-  const { user ,editCategory, deleteCategory, updateExpense, addCategory } = useUser();
+  const { user, editCategory, deleteCategory, updateExpense, addCategory } = useUser();
   const [data, setData] = useState([]);
   const [balanceMensual, setBalanceMensual] = useState([]);
   const [isAnualModalOpen, setIsAnualModalOpen] = useState(false);
@@ -21,12 +22,12 @@ const TablaBalance = () => {
   const [isMonthlyModalOpen, setIsMonthlyModalOpen] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const navigate = useNavigate();
-  const [pendingChanges, setPendingChanges] = useState([]); 
-  const [isSaving, setIsSaving] = useState(false); 
-  
+  const [pendingChanges, setPendingChanges] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
+
 
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  
+
   useEffect(() => {
     if (user && user.balanceAnual && user.balanceAnual.length > 0) {
       setData(user.balanceAnual[0].data);
@@ -109,41 +110,41 @@ const TablaBalance = () => {
   const handleExpenseChange = (categoryIndex, monthIndex, newValue) => {
     const parsedValue = parseFloat(newValue);
     const newData = data.map((item, index) => {
-        if (index === categoryIndex) {
-            const updatedExpenses = item.expenses.map((expense, i) => {
-                if (i === monthIndex) {
-                    return { ...expense, amount: isNaN(parsedValue) ? 0 : parsedValue };
-                } else {
-                    return expense;
-                }
-            });
-            return { ...item, expenses: updatedExpenses };
-        } else {
-            return item;
-        }
+      if (index === categoryIndex) {
+        const updatedExpenses = item.expenses.map((expense, i) => {
+          if (i === monthIndex) {
+            return { ...expense, amount: isNaN(parsedValue) ? 0 : parsedValue };
+          } else {
+            return expense;
+          }
+        });
+        return { ...item, expenses: updatedExpenses };
+      } else {
+        return item;
+      }
     });
     setData(newData);
 
     const newChange = { categoryIndex, monthIndex, newValue: isNaN(parsedValue) ? 0 : parsedValue };
 
     setPendingChanges(prevChanges => {
-        const filteredChanges = prevChanges.filter(change => !(change.categoryIndex === categoryIndex && change.monthIndex === monthIndex));
-        return [...filteredChanges, newChange];
+      const filteredChanges = prevChanges.filter(change => !(change.categoryIndex === categoryIndex && change.monthIndex === monthIndex));
+      return [...filteredChanges, newChange];
     });
-};
+  };
 
 
   const savePendingChanges = () => {
-    
-    if(pendingChanges.length >0 ) {
-      updateExpense(data);
-      
 
-    }else{
+    if (pendingChanges.length > 0) {
+      updateExpense(data);
+
+
+    } else {
       Swal.fire("No hay cambios pendientes");
-    }     
+    }
     setIsSaving(true);
-    setPendingChanges([]); 
+    setPendingChanges([]);
     setIsSaving(false);
     setEditingMonth(null);
   };
@@ -181,20 +182,20 @@ const TablaBalance = () => {
   };
 
   return (
-    <div style={{ marginTop: "70px", marginBottom:"20px", color:"white",  width: "70%", marginLeft: "auto", marginRight: "auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-around", alignItems:"center"}}>
-        <h3 style={{fontSize:"20px"}}>Balance anual 2024</h3>
-        <Button variant="text" style={{fontSize:"20px", color:"white"}} onClick={openAnualCharts}>
+    <div style={{ marginTop: "70px", marginBottom: "20px", color: "white", width: "70%", marginLeft: "auto", marginRight: "auto" }}>
+      <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
+        <h3 style={{ fontSize: "20px" }}>Balance anual 2024</h3>
+        <Button variant="text" style={{ fontSize: "20px", color: "white" }} onClick={openAnualCharts}>
           Mostrar Gráficos
         </Button>
-        <Button variant="text" style={{fontSize:"20px", color:"white"}} onClick={()=> navigate("/instructivo")}>
+        <Button variant="text" style={{ fontSize: "20px", color: "white" }} onClick={() => navigate("/instructivo")}>
           Instructivo
         </Button>
-        <TableToPdf data={data} months={months} monthlyBalance={balanceMensual} monthlyExpenses={totalGastos}/>
+        <TableToPdf data={data} months={months} monthlyBalance={balanceMensual} monthlyExpenses={totalGastos} />
       </div>
 
       <TableContainer component={Paper} >
-        <Table sx={{ minWidth: 700 }}  aria-label="customized table">
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead style={{ background: "#628979" }}>
             <TableRow>
               <TableCell style={{ color: "white" }}>
@@ -207,7 +208,7 @@ const TablaBalance = () => {
                 <TableCell style={{ color: 'white' }} key={index}>
                   <Link style={{ color: 'white', textDecoration: 'none' }} onClick={() => openMonthlyModal(month)}>{month}</Link>
                   <IconButton aria-label="edit" onClick={editarMes(index)}><EditIcon /></IconButton>
-                  <IconButton aria-label="save"  onClick={() =>  savePendingChanges() }> <CheckCircleIcon/></IconButton>
+                  <IconButton aria-label="save" onClick={() => savePendingChanges()}> <CheckCircleIcon /></IconButton>
                 </TableCell>
               ))}
             </TableRow>
@@ -217,7 +218,7 @@ const TablaBalance = () => {
               <TableRow key={index}>
                 {item.category && (
                   <>
-                    <TableCell style={{ background: "#628979",position: 'sticky', left: 0, zIndex: 1  }} >
+                    <TableCell style={{ background: "#628979", position: 'sticky', left: 0, zIndex: 1 }} >
                       <IconButton
                         aria-label="delete"
                         color="error"
@@ -235,7 +236,7 @@ const TablaBalance = () => {
                         <EditIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell style={{ background: "#628979", color: "white",  position: 'sticky', left: 0, zIndex: 1 }}>
+                    <TableCell style={{ background: "#628979", color: "white", position: 'sticky', left: 0, zIndex: 1 }}>
                       {item.category}
                     </TableCell>
                     {item.expenses.map((expense, expenseIndex) => (
@@ -256,19 +257,19 @@ const TablaBalance = () => {
               </TableRow>
             ))}
             <TableRow>
-              <TableCell style={{ background: "black", color: "white"  }}></TableCell>
-              <TableCell style={{ background: "black", color: "white"  ,position: 'sticky', left: 0, zIndex: 1 }}>
+              <TableCell style={{ background: "black", color: "white" }}></TableCell>
+              <TableCell style={{ background: "black", color: "white", position: 'sticky', left: 0, zIndex: 1 }}>
                 Gastos Mensuales
               </TableCell>
               {totalGastos.map((gastos, index) => (
-                <TableCell key={index} style={{ borderRadius: "0.5rem"  }}>
+                <TableCell key={index} style={{ borderRadius: "0.5rem" }}>
                   {gastos}
                 </TableCell>
               ))}
             </TableRow>
             <TableRow>
-              <TableCell style={{ background: "black", color: "white"  }}></TableCell>
-              <TableCell style={{ fontSize: "15px", background: "black", color: "white",position: 'sticky', left: 0, zIndex: 1  }}>
+              <TableCell style={{ background: "black", color: "white" }}></TableCell>
+              <TableCell style={{ fontSize: "15px", background: "black", color: "white", position: 'sticky', left: 0, zIndex: 1 }}>
                 BALANCE MENSUAL
               </TableCell>
               {balanceMensual.map((balance, index) => (
@@ -279,15 +280,20 @@ const TablaBalance = () => {
         </Table>
       </TableContainer>
       <Modal open={isAnualModalOpen} onClose={closeAnualCharts}>
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}>
-          <AnualChartsBalance data={data} gastosMensuales={totalGastos}/>
+        <Box  sx={{  position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: { xs: "90%", sm: "80%", md: "70%", lg: "60%" }, maxWidth: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4, overflowY: "auto",maxHeight: "90vh",
+              }}
+        >
+          <AnualChartsBalance data={data} gastosMensuales={totalGastos} />
         </Box>
       </Modal>
 
       <Modal open={isMonthlyModalOpen} onClose={closeMonthlyModal}>
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}>
+        <Box
+          sx={{  position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: { xs: "90%", sm: "80%", md: "70%", lg: "60%" }, maxWidth: 900, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4, overflowY: "auto", maxHeight: "90vh",
+          }}
+        >
           <h2>{selectedMonth}</h2>
-          <MensualChartsBalance month={selectedMonth} data={data}/>
+          <MensualChartsBalance month={selectedMonth} data={data} />
         </Box>
       </Modal>
     </div>
