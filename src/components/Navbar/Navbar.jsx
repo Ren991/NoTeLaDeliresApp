@@ -20,7 +20,7 @@ import { useUser } from '../../Context/UserContext';
 
 
 const drawerWidth = 240;
-const navItems = ["Salir", "Balance Mensual"];
+const navItems = ["Salir", "Balance Mensual","instructivo"];
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -68,6 +68,8 @@ function Navbar() {
       navigate('/');
     } else if (item === "Balance Mensual") {
       navigate('/tabla_user');  // Navegar a la ruta de instructivo
+    }else{
+      navigate("/instructivo")
     }
   };
 

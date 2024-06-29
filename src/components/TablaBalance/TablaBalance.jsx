@@ -24,27 +24,29 @@ const TablaBalance = () => {
   const navigate = useNavigate();
   const [pendingChanges, setPendingChanges] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Estado de carga
 
 
   const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   useEffect(() => {
-    if (user && user.balanceAnual && user.balanceAnual.length > 0) {
-      setData(user.balanceAnual[0].data);
-    } else {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Error al recuperar los datos. Vuelva a intentarlo nuevamente',
-        icon: 'error',
-        confirmButtonText: 'Salir'
-      });
-      navigate("/");
-    }
-  }, [user]);
+    console.log(user)
+    if (user !== null) {
+      console.log(user)
+      // Verificar y establecer los datos
+      if (user.balanceAnual && user.balanceAnual.length > 0) {
+        setData(user.balanceAnual[0].data);
+      }
+      // Una vez que el usuario está disponible, actualizamos el estado de carga
+      setIsLoading(false);
+    } 
+  }, [user, navigate]);
 
   useEffect(() => {
-    updateMonthlyData();
-  }, [data]);
+    if (!isLoading) {
+      updateMonthlyData();
+    }
+  }, [data, isLoading]);
 
   const updateMonthlyData = () => {
     const ingresos = data.find(item => item.category === "INGRESOS")?.expenses || [];
@@ -98,7 +100,6 @@ const TablaBalance = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteCategory(index);
-        Swal.fire("Eliminado", "La categoría ha sido eliminada correctamente", "success");
       }
     });
   };
@@ -138,8 +139,6 @@ const TablaBalance = () => {
 
     if (pendingChanges.length > 0) {
       updateExpense(data);
-
-
     } else {
       Swal.fire("No hay cambios pendientes");
     }
