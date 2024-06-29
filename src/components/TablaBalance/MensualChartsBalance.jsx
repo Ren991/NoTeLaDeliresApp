@@ -5,6 +5,8 @@ import { LineChart } from '@mui/x-charts/LineChart';
 const MensualChartsBalance = ({ data, month }) => {
     const [datosMensuales, setDatosMensuales] = useState([]);
 
+    console.log("hola");
+
     
 
     const gastosMensuales = data
@@ -41,7 +43,7 @@ const MensualChartsBalance = ({ data, month }) => {
             {/* Gráfico de Líneas */}
             <h2>Gráfico de Líneas</h2>
             <LineChart
-                width={500}
+                width={800}
                 height={300}
                 series={lineChartData}
                 xAxis={[{ scaleType: 'point', data: xAxisCategories }]}

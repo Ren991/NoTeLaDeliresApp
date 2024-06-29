@@ -11,7 +11,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from '@mui/material/Backdrop';
-
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -31,17 +30,16 @@ export default function Login() {
 
 
   const navigate = useNavigate();
-  const { setUser } = useUser();
   const [loading, setLoading] = useState(false);
-  const { signIn } = useUser();
-  const {user} = useUser();
+  const { signIn } = useUser();  // Función global para loguearse.
+  const {user} = useUser(); // Estado global de usuario.
 
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
 
   useEffect(() => {
-    if (user !== null) {
+    if (user !== null) { // Si el usuario está logueado lo redirige hacia la página del balance.
      navigate("/tabla_user")
     }
   }, [user]);
@@ -67,15 +65,12 @@ export default function Login() {
       if (userDoc.exists()) {
         const userData = userDoc.data();
         const token = await user.getIdToken();
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('token', token);
-        localStorage.setItem('id', user.uid); 
   
         // Verificar si balanceAnual existe y no está vacío
         const balanceAnual = userData.balanceAnual && userData.balanceAnual.length > 0 ? userData.balanceAnual : [];
         const dataUser = { email, token: token, balanceAnual: balanceAnual, id: user.uid };
   
-        signIn(dataUser);
+        signIn(dataUser); // Llama a la función global y le pasa como parámetro el objeto creado en linea 71.
         NavHome();
         setLoading(false); // Ocultar Backdrop
       } else {

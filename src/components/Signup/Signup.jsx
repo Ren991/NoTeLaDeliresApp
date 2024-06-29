@@ -50,7 +50,7 @@ export default function SignUp() {
   
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password); 
       const user = userCredential.user;
       const userDocRef = doc(db, 'users', user.uid);
       await setDoc(userDocRef, {
@@ -182,10 +182,8 @@ export default function SignUp() {
           
               ]
             }
-          ] //para guardar los balances.
-      });
-
-      
+          ] //Este array se guarda por defecto en la colección "users" en firebase en la propiedad balanceMensual.
+      });      
       navigate(("/login"));
   } catch (error) {
       Swal.fire({
@@ -194,11 +192,11 @@ export default function SignUp() {
           icon: 'error',
           confirmButtonText: 'Salir'
         })
-        clearFields()
+        clearFields() // Función que borra los campos.
   }
   };
 
-  useEffect(() => {
+  useEffect(() => { // Si hay usuario logueado lo redirige hacia la página donde se muestra el balance.
     if (user !== null) {
      navigate("/tabla_user")
     }

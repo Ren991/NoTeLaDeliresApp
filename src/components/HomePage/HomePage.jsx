@@ -2,9 +2,8 @@ import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer'; 
 import { Typography, Container, Button } from '@mui/material';
 import { useNavigate  } from "react-router-dom";
-import { useEffect } from 'react';
 import { useUser } from '../../Context/UserContext';
-import PropTypes from 'prop-types';
+
 
 
 
@@ -30,10 +29,8 @@ const HomePage = (onLogout) => {
                 <Typography variant="body1" paragraph>
                     Nuestra aplicación te ayuda a administrar tus ingresos y gastos de manera eficiente.
                 </Typography>
-                {
-                    user ?                 <Button onClick={()=>navigate("/tabla_user")} variant='outlined' style={{fontFamily:"courier", fontSize:"25px", marginTop:"25px"}}>Balance Mensual</Button>
-                    :                 <Button onClick={()=>navigate("/login")} variant='outlined' style={{fontFamily:"courier", fontSize:"25px", marginTop:"25px"}}>Iniciar sesión</Button>
-
+                {user ? <Button onClick={()=>navigate("/tabla_user")} variant='outlined' style={{fontFamily:"courier", fontSize:"25px", marginTop:"25px"}}>Balance Mensual</Button>
+                    : <Button onClick={()=>navigate("/login")} variant='outlined' style={{fontFamily:"courier", fontSize:"25px", marginTop:"25px"}}>Iniciar sesión</Button>
                 }
                 
             </Container>
